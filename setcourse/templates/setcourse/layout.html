@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}setCourse{% endblock %}</title>
+        <link href="{% static 'setcourse/styles.css' %}" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/ba3c673c5b.js" crossorigin="anonymous"></script>
+        {% block script %}
+        <script src="{% static 'setcourse/setcourse.js' %}"></script>
+        {% endblock %}
+    </head>
+    <body>
+
+      <header>
+        <a href="{% url 'index' %}"><h1>setCourse!</h1></a>
+        <div>User: {{ user.username }}</div>
+        <a href="{% url 'new_course' %}">Host a Course</a>
+      </header>
+
+      <main>
+          {% block body %}
+          {% endblock %}
+      </main>
+
+        {% if user.is_authenticated %}
+        <nav>
+          <div>Nav</div>
+        </nav>
+        {% endif %}
+    </body>
+</html>

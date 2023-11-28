@@ -9,6 +9,7 @@ class User(AbstractUser):
 class Course(models.Model):
    host = models.ForeignKey(User, on_delete=models.CASCADE, related_name="course")
    title = models.CharField(max_length=264, default=None)
+   image = models.CharField(max_length=264, default=None)
    description = models.CharField(max_length=1024, default=None)
    practical = models.CharField(max_length=1024, default=None)
    price = models.IntegerField(default=0)
@@ -21,6 +22,7 @@ class Course(models.Model):
             "id": self.id,
             "host": f"{self.host}",
             "title": self.title,
+            "image": self.image,
             "description": self.description,
             "practical": self.practical,
             "price": self.price,
