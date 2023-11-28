@@ -3,52 +3,67 @@
 {% block body %}
 
 {% if user.is_authenticated %}
-    <div class="form_wrapper">
 
-        <form action="{% url 'new_course' %}" method="POST" class="create_form">
+        <form action="{% url 'new_course' %}" method="POST">
             {% csrf_token %}
-            <div id="course_title_details">
-                <input type="text", name="host", placeholder="Hosted by: {{ user.username }}", disabled="True">
-                <input type="text", name="title", placeholder="Course Title">
-                <input type="text", name="image", placeholder="Image Url">
+            <div id="course_form_wrapper">
+                <div id="column1">
+                    <div id="title_wrapper">
+                        <div id="course_title_details">
+                            <input type="text", name="host", placeholder="Hosted by: {{ user.username }}", disabled="True">
+                            <input type="text", name="title", placeholder="Course Title">
+                            <input type="text", name="image", placeholder="Image Url">
+                        </div>
+                        <div>
+                            <img id="course_img" src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
+                        </div>
+                    </div>
+
+                    <div class="module_wrapper">
+                        <h2>+ Module</h2>
+                        <div class="module_form">
+                            <!-- <form action="{% url 'new_course' %}" method="PUT" class="create_form">
+                                {% csrf_token %}
+                                <input class="module_input", type="text", name="module_title", placeholder="Module Title">
+                                <input class="module_input", type="text", name="module_description", placeholder="Module Description">
+                                <input class="module_input", type="text", name="location", placeholder="Module Location">
+                                <input class="submit_button" type="submit">
+                                <button id="edit_button"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button id="delete_button"><i class="fa-solid fa-trash"></i></button>
+                            </form> -->
+                        </div>
+                    </div>
+
+                    <div class="workshop_wrapper">
+
+                        <h3>+ Workshop</h3>
+                        <div class="workshop_form">
+                            <!-- <form action="{% url 'new_course' %}" method="PUT" class="create_form">
+                                {% csrf_token %}
+                                <input class="date_field" type="datetime-local", name="time">
+                                <input class="subject_field" type="text", name="subject", placeholder="Subject">
+                                <input class="submit_button" type="submit">
+                                <button id="edit_button"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button id="delete_button"><i class="fa-solid fa-trash"></i></button>
+                            </form> -->
+                        </div>
+                    </div>
+                </div>
+                <div id="column2">
+                    <div>
+                        <textarea class="course_details", name="description", placeholder="Course Description"></textarea>
+                        <textarea class="course_details", name="practical", placeholder="Practical Details"></textarea>
+                        <textarea class="course_details", placeholder="Price Details"></textarea>
+                        <input id="course_price" type="number", name="price", placeholder="Course Price">
+                    </div>
+                    <div>
+                        <input id="publish_button" type="submit" value="Publish">
+                    </div>
+                </div>
             </div>
-            <div id="course_practical_details">
-                <input type="text", name="description", placeholder="Course Description">
-                <input type="text", name="practical", placeholder="Practical Details">
-            </div>
-            <div id="course_price_details">
-                <input type="number", name="price", placeholder="Course Price">
-                <input type="text", name="price_details", placeholder="Price Details">
-            </div>
-            <input class="submit_button" type="submit">
         </form>
     </div>
 
-    <div class="form_wrapper">
-
-        <h2>+ Module</h2>
-
-        <form action="{% url 'new_course' %}" method="POST" class="create_form">
-            {% csrf_token %}
-            <input type="text", name="module_title", placeholder="Module Title">
-            <input type="text", name="module_description", placeholder="Description">
-            <input type="text", name="location", placeholder="Location">
-            <input class="submit_button" type="submit">
-        </form>
-    </div>
-
-
-    <div class="form_wrapper">
-
-        <h2>+ Workshop</h2>
-
-        <form action="{% url 'new_course' %}" method="POST" class="create_form">
-            {% csrf_token %}
-            <input type="datetime-local", name="time">
-            <input type="text", name="subject", placeholder="Subject">
-            <input class="submit_button" type="submit">
-        </form>
-    </div>
 
 {% endif %}
 

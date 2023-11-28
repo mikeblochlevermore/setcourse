@@ -12,11 +12,16 @@
     </head>
     <body>
 
-      <header>
-        <a href="{% url 'index' %}"><h1>setCourse!</h1></a>
-        <div>User: {{ user.username }}</div>
-        <a href="{% url 'new_course' %}">Host a Course</a>
-      </header>
+      <nav>
+        <div id="user_display">
+          <img id="user_img" src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg">
+          <div id="username">{{ user.username }}</div>
+        </div>
+        <div>
+          <a href="{% url 'index' %}" id="logo">setCourse</a>
+        </div>
+      </nav>
+
 
       <main>
           {% block body %}
@@ -24,9 +29,6 @@
       </main>
 
         {% if user.is_authenticated %}
-        <nav>
-          <div>Nav</div>
-        </nav>
         {% endif %}
     </body>
 </html>

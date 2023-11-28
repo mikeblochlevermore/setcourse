@@ -1,3 +1,133 @@
-h1 {
-    font-size: 80px;
+* {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 30px 15px 30px;
+}
+
+#logo {
+    font-size: 40px;
+    text-decoration: none;
+    color: black;
+}
+
+#user_display {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 40px;
+}
+
+#user_img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+#title_wrapper {
+    display: flex;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+#course_img {
+    object-fit: cover;
+}
+
+#course_form_wrapper {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    margin: 30px;
+    column-gap: 30px;
+}
+
+#course_title_details {
+    position: absolute;
+    display: grid;
+    margin: 20px;
+    width: 50%;
+}
+
+#course_title_details input {
+    font-size: 30px;
+    border: none;
+    text-decoration: none;
+    outline: none;
+    padding: 10px;
+    width: 80%;
+    margin-bottom: 10px;
+}
+
+#column2 {
+    display: grid;
+    row-gap: 30px;
+}
+
+.course_details {
+    height: 100px;
+    width: 90%;
+    margin-bottom: 30px;
+    padding: 30px;
+    font-size: 20px;
+}
+
+#course_price {
+    font-size: 40px;
+    text-align: right;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+    margin-bottom: 40px;
+}
+
+/* Removes arrows on number inputs for Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#publish_button {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    height: 40px;
+    width: 120px;
+    background-color: lightblue;
+    border-radius: 20px;
+}
+
+.module_wrapper {
+    margin-top: 30px;
+    border: 1px solid lightblue;
+    padding: 15px;
+}
+
+.module_input {
+    padding: 15px;
+    font-size: 15px;
+    margin: 15px 0 15px 0;
+}
+
+.workshop_wrapper {
+    margin-top: 10px;
+    margin-left: 30px;
+    border: 1px solid lightgreen;
+    padding: 15px;
+}
+
+.subject_field {
+    padding: 15px;
+    font-size: 12px;
+    margin: 15px 0 15px 0;
 }
