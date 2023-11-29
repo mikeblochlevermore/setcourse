@@ -19,34 +19,66 @@ def new_course(request):
     if request.method == "GET":
 
         # Create a blank course
-        new_course = Course.objects.create(
-                host=request.user,
-            )
-        print(f"Course Created. id:", new_course.id)
+        # new_course = Course.objects.create(
+        #         host=request.user,
+        #     )
+        # print(f"Course Created. id:", new_course.id)
 
         return render(request, "setcourse/new_course.html", {
-                "id": new_course.id
+                "id": "1"
             })
 
     if request.method == "PUT":
         data = json.loads(request.body)
+
         # lookup the course by id (sent as part of request)
         course = Course.objects.get(id=data["course_id"])
 
-        # level = course, module or workshop
-        # input = title, description etc.
-        # new_value = data from that input field
-        level = data["level"]
-        input = data["input"]
-        new_value = data["new_value"]
+        if data["new_module"] == "True":
+            new_module = Module.objects.create(
+                    course=course,
+                )
+            print(f"Module Created. id:", new_module.id)
+            return JsonResponse(new_module.id, safe=False)
 
-        if level == "course":
-            setattr(course, input, new_value)
-            course.save()
+        else:
 
-            print("new detail saved")
+            # level = course, module or workshop
+            # input = title, description etc.
+            # value = data from that input field
+            level = data["level"]
+            input = data["input"]
+            value = data["value"]
+
+            if level == "course":
+                setattr(course, input, value)
+                course.save()
+
+                print(f"COURSE id: {course.id} detail saved: {input} = {value}")
+
+                return HttpResponse(status=204)
+
+            if level == "module":
+                module = Module.objects.get(id=data["id"])
+                setattr(module, input, value)
+                module.save()
+
+                print(f"MODULE id: {module.id} detail saved: {input} = {value}")
+
+            return HttpResponse(status=204)
+
+    if request.method == "DELETE":
+        data = json.loads(request.body)
+
+        # lookup the module by id (sent as part of request)
+        module = Module.objects.get(id=data["id"])
+        id = module.id
+        module.delete()
+
+        print(f"module {id} deleted")
 
         return HttpResponse(status=204)
+
 
 
 

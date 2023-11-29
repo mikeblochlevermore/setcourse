@@ -15,7 +15,7 @@ class Course(models.Model):
    price = models.IntegerField(default=0, null=True)
    price_details = models.CharField(max_length=264, default=None, null=True)
    links = models.CharField(max_length=1024, default=None, null=True)
-   time_of_post = models.DateTimeField(auto_now_add=True)
+   time_of_post = models.DateTimeField(auto_now_add=True, null=True)
 
    def serialize(self):
         return {
@@ -35,10 +35,10 @@ class Course(models.Model):
 # Module dates are calculated by the span of dates in the Class model below
 class Module(models.Model):
    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="module")
-   title = models.CharField(max_length=264, default=None)
-   description = models.CharField(max_length=1024, default=None)
-   location = models.CharField(max_length=1024, default=None)
-   notes = models.CharField(max_length=1024, default=None)
+   title = models.CharField(max_length=264, default=None, null=True)
+   description = models.CharField(max_length=1024, default=None, null=True)
+   location = models.CharField(max_length=1024, default=None, null=True)
+   notes = models.CharField(max_length=1024, default=None, null=True)
 
    def serialize(self):
         return {

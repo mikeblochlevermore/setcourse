@@ -12,7 +12,7 @@
                         <div id="course_title_details">
                             <input id="course_id" type="hidden", value="{{ id }}">
                             <input type="text", name="host", placeholder="Hosted by: {{ user.username }}", disabled="True">
-                            <input id="title" type="text", name="title", placeholder="Course Title", onblur="save('course', 'title')">
+                            <input id="title" type="text", name="title", placeholder="Course Title", onblur="save('course', 'title', value)">
                             <input id="image" type="text", name="image", placeholder="Image Url", onblur="save('course', 'image')">
                         </div>
                         <div>
@@ -20,19 +20,8 @@
                         </div>
                     </div>
 
-                    <div class="module_wrapper">
-                        <div>+ Module</div>
-                        <div class="module_form">
-                            <!-- <form action="{% url 'new_course' %}" method="PUT" class="create_form">
-                                {% csrf_token %}
-                                <input class="module_input", type="text", name="module_title", placeholder="Module Title">
-                                <input class="module_input", type="text", name="module_description", placeholder="Module Description">
-                                <input class="module_input", type="text", name="location", placeholder="Module Location">
-                                <input class="submit_button" type="submit">
-                                <button id="edit_button"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button id="delete_button"><i class="fa-solid fa-trash"></i></button>
-                            </form> -->
-                        </div>
+                    <div id="modules">
+                        <div class="module_wrapper", id="new_module", onclick="new_module()">+ Module</div>
                     </div>
 
                     <div class="workshop_wrapper">
