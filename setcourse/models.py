@@ -8,13 +8,13 @@ class User(AbstractUser):
 
 class Course(models.Model):
    host = models.ForeignKey(User, on_delete=models.CASCADE, related_name="course")
-   title = models.CharField(max_length=264, default=None)
-   image = models.CharField(max_length=264, default=None)
-   description = models.CharField(max_length=1024, default=None)
-   practical = models.CharField(max_length=1024, default=None)
-   price = models.IntegerField(default=0)
-   price_details = models.CharField(max_length=264, default=None)
-   links = models.CharField(max_length=1024, default=None)
+   title = models.CharField(max_length=264, default=None, null=True)
+   image = models.CharField(max_length=264, default=None, null=True)
+   description = models.CharField(max_length=1024, default=None, null=True)
+   practical = models.CharField(max_length=1024, default=None, null=True)
+   price = models.IntegerField(default=0, null=True)
+   price_details = models.CharField(max_length=264, default=None, null=True)
+   links = models.CharField(max_length=1024, default=None, null=True)
    time_of_post = models.DateTimeField(auto_now_add=True)
 
    def serialize(self):

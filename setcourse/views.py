@@ -1,19 +1,53 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.db import IntegrityError
+from django.utils import timezone
+import json
 
-from .models import User
+from .models import User, Course, Module, Workshop, Comment, Student
 
 # Create your views here.
 def index(request):
     return render(request, "setcourse/index.html")
 
 
+@csrf_exempt
 def new_course(request):
     if request.method == "GET":
-        return render(request, "setcourse/new_course.html")
+
+        # Create a blank course
+        new_course = Course.objects.create(
+                host=request.user,
+            )
+        print(f"Course Created. id:", new_course.id)
+
+        return render(request, "setcourse/new_course.html", {
+                "id": new_course.id
+            })
+
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        # lookup the course by id (sent as part of request)
+        course = Course.objects.get(id=data["course_id"])
+
+        # level = course, module or workshop
+        # input = title, description etc.
+        # new_value = data from that input field
+        level = data["level"]
+        input = data["input"]
+        new_value = data["new_value"]
+
+        if level == "course":
+            setattr(course, input, new_value)
+            course.save()
+
+            print("new detail saved")
+
+        return HttpResponse(status=204)
+
 
 
 

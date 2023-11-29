@@ -10,9 +10,10 @@
                 <div id="column1">
                     <div id="title_wrapper">
                         <div id="course_title_details">
+                            <input id="course_id" type="hidden", value="{{ id }}">
                             <input type="text", name="host", placeholder="Hosted by: {{ user.username }}", disabled="True">
-                            <input type="text", name="title", placeholder="Course Title">
-                            <input type="text", name="image", placeholder="Image Url">
+                            <input id="title" type="text", name="title", placeholder="Course Title", onblur="save('course', 'title')">
+                            <input id="image" type="text", name="image", placeholder="Image Url", onblur="save('course', 'image')">
                         </div>
                         <div>
                             <img id="course_img" src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
@@ -20,7 +21,7 @@
                     </div>
 
                     <div class="module_wrapper">
-                        <h2>+ Module</h2>
+                        <div>+ Module</div>
                         <div class="module_form">
                             <!-- <form action="{% url 'new_course' %}" method="PUT" class="create_form">
                                 {% csrf_token %}
@@ -36,7 +37,7 @@
 
                     <div class="workshop_wrapper">
 
-                        <h3>+ Workshop</h3>
+                        <div>+ Workshop</div>
                         <div class="workshop_form">
                             <!-- <form action="{% url 'new_course' %}" method="PUT" class="create_form">
                                 {% csrf_token %}
@@ -51,10 +52,10 @@
                 </div>
                 <div id="column2">
                     <div>
-                        <textarea class="course_details", name="description", placeholder="Course Description"></textarea>
-                        <textarea class="course_details", name="practical", placeholder="Practical Details"></textarea>
-                        <textarea class="course_details", placeholder="Price Details"></textarea>
-                        <input id="course_price" type="number", name="price", placeholder="Course Price">
+                        <textarea id="description", class="course_details", name="description", placeholder="Course Description", onblur="save('course', 'description')"></textarea>
+                        <textarea id="practical", class="course_details", name="practical", placeholder="Practical Details", onblur="save('course', 'practical')"></textarea>
+                        <textarea id="price_details", class="course_details", placeholder="Price Details", onblur="save('course', 'price_details')"></textarea>
+                        <input id="price", type="number", name="price", placeholder="Course Price", onblur="save('course', 'price')">
                     </div>
                     <div>
                         <input id="publish_button" type="submit" value="Publish">
