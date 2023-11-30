@@ -4,6 +4,7 @@
     border-radius: 6px;
 }
 
+
 nav {
     display: flex;
     justify-content: space-between;
@@ -110,29 +111,56 @@ input::-webkit-inner-spin-button {
 
 .module_wrapper {
     margin-top: 30px;
-    border: 1px solid lightblue;
+    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
     padding: 15px;
     font-size: 20px;
     color: gray;
+    display: block;
+    gap: 10px;
 }
 
-.module_input {
+.module_title, .module_location, .module_description {
     padding: 15px;
     font-size: 15px;
-    margin: 15px 0 15px 0;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px gray;
+}
+
+.module_title {
+    width: 60%;
+    font-size: 20px;
+}
+
+.module_description {
+    width: 85%;
+    margin-right: 15px;
 }
 
 .workshop_wrapper {
     margin-top: 10px;
     margin-left: 30px;
-    border: 1px solid lightgreen;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
     padding: 15px;
     font-size: 15px;
     color: gray;
 }
 
-.subject_field {
+.workshop_form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.workshop_subject_input, .workshop_date_input {
     padding: 15px;
     font-size: 12px;
-    margin: 15px 0 15px 0;
+    height: 15px;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px gray;
+}
+
+.workshop_subject_input {
+    width: 70%;
 }

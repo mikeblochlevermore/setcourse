@@ -52,10 +52,9 @@ class Module(models.Model):
 
 # A Workshop is a section of a Module
 class Workshop(models.Model):
-#    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="workshop")
    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="workshop")
-   time = models.DateTimeField(default=None)
-   subject = models.CharField(max_length=264, default=None)
+   time = models.DateTimeField(default=None, null=True)
+   subject = models.CharField(max_length=264, default=None, null=True)
 
    def serialize(self):
         return {

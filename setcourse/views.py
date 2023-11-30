@@ -31,17 +31,31 @@ def new_course(request):
     if request.method == "PUT":
         data = json.loads(request.body)
 
-        # lookup the course by id (sent as part of request)
-        course = Course.objects.get(id=data["course_id"])
-
         if data["new_module"] == "True":
+
+            # lookup the course by id (sent as part of request)
+            course = Course.objects.get(id=data["course_id"])
+
             new_module = Module.objects.create(
                     course=course,
                 )
-            print(f"Module Created. id:", new_module.id)
+            print(f"Module {new_module.id} - created")
             return JsonResponse(new_module.id, safe=False)
 
+        if data["new_workshop"] == "True":
+
+            module = Module.objects.get(id=data["module_id"])
+
+            new_workshop = Workshop.objects.create(
+                    module=module
+                )
+            print(f"Workshop {new_workshop.id} - created")
+            return JsonResponse(new_workshop.id, safe=False)
+
         else:
+
+            # lookup the course by id (sent as part of request)
+            course = Course.objects.get(id=data["course_id"])
 
             # level = course, module or workshop
             # input = title, description etc.
@@ -56,8 +70,6 @@ def new_course(request):
 
                 print(f"COURSE id: {course.id} detail saved: {input} = {value}")
 
-                return HttpResponse(status=204)
-
             if level == "module":
                 module = Module.objects.get(id=data["id"])
                 setattr(module, input, value)
@@ -65,17 +77,35 @@ def new_course(request):
 
                 print(f"MODULE id: {module.id} detail saved: {input} = {value}")
 
-            return HttpResponse(status=204)
+            if level == "workshop":
+                workshop = Workshop.objects.get(id=data["id"])
+                setattr(workshop, input, value)
+                workshop.save()
+
+                print(f"WORKSHOP id: {workshop.id} detail saved: {input} = {value}")
+
+        return HttpResponse(status=204)
 
     if request.method == "DELETE":
         data = json.loads(request.body)
 
-        # lookup the module by id (sent as part of request)
-        module = Module.objects.get(id=data["id"])
-        id = module.id
-        module.delete()
+        if data["level"] == "module":
 
-        print(f"module {id} deleted")
+            # lookup the module by id (sent as part of request)
+            module = Module.objects.get(id=data["id"])
+            id = module.id
+            module.delete()
+
+            print(f"Module {id} - deleted")
+
+        if data["level"] == "workshop":
+
+            # lookup the workshop by id (sent as part of request)
+            workshop = Workshop.objects.get(id=data["id"])
+            id = workshop.id
+            workshop.delete()
+
+            print(f"Workshop {id} - deleted")
 
         return HttpResponse(status=204)
 
