@@ -3,7 +3,7 @@ function save (level, input, value, id) {
     // 'level' can be course, module or workshop
     // input can be title, description etc
     // value is whatever is in that field
-    // id is database id of the module or workshop
+    // id is database id of the course, module or workshop
     course_id = document.getElementById("course_id").value
 
     console.log("COURSE:", course_id, level, id, input, value, "-saved")

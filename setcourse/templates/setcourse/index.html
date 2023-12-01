@@ -2,16 +2,6 @@
 
 {% block body %}
 
-{% if user.is_authenticated %}
-    <!-- COURSES -->
-    <div id="course_list">
-
-    </div>
-    <a href="{% url 'new_course' %}">Host a Course</a>
-{% else %}
-
-
-
 <div id="login_wrapper">
     <div id="login">
         {% if message %}
@@ -36,6 +26,5 @@
     </div>
 </div>
 
-{% endif %}
 
 {% endblock %}

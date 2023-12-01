@@ -11,7 +11,32 @@ from .models import User, Course, Module, Workshop, Comment, Student
 
 # Create your views here.
 def index(request):
+
     return render(request, "setcourse/index.html")
+
+
+def profile(request):
+
+    hosted_courses = Course.objects.filter(host=request.user)
+
+    return render(request, "setcourse/profile.html", {
+        "hosted_courses": hosted_courses
+    })
+
+
+def dashboard(request, course_id):
+
+    course = Course.objects.get(id=course_id)
+    modules = Module.objects.filter(course=course)
+
+    # Gets workshops from modules
+    workshops = Workshop.objects.filter(module__in=modules)
+
+    return render(request, "setcourse/dashboard.html", {
+        "course": course,
+        "modules": modules,
+        "workshops": workshops
+    })
 
 
 @csrf_exempt
@@ -19,13 +44,13 @@ def new_course(request):
     if request.method == "GET":
 
         # Create a blank course
-        # new_course = Course.objects.create(
-        #         host=request.user,
-        #     )
-        # print(f"Course Created. id:", new_course.id)
+        new_course = Course.objects.create(
+                host=request.user,
+            )
+        print(f"Course Created. id:", new_course.id)
 
         return render(request, "setcourse/new_course.html", {
-                "id": "1"
+                "id": new_course.id
             })
 
     if request.method == "PUT":
@@ -124,7 +149,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("profile"))
         else:
             return render(request, "setcourse/login.html", {
                 "message": "Invalid username and/or password."

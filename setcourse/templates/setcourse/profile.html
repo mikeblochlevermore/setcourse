@@ -1,0 +1,33 @@
+{% extends "setcourse/layout.html" %}
+
+{% block body %}
+
+{% if user.is_authenticated %}
+    <!-- COURSES -->
+    <div id="course_list">
+
+        {% for course in hosted_courses %}
+        <a href="{% url 'dashboard' course.id %}">
+            <div class="card">
+                <img src="{{ course.image }}">
+                <div class="card_details">
+                    <h2>{{ course.title  }}</h2>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+
+        <a href="{% url 'new_course' %}">
+            <div class="card">
+                <img src="https://t4.ftcdn.net/jpg/01/14/04/65/360_F_114046562_CoMtlfJGu0WhnDHLMz8qOHtHblQBH9QK.jpg">
+                <div class="card_details">
+                    <h2>Host A New Course</h2>
+                </div>
+            </div>
+        </a>
+
+    </div>
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "setcourse/layout.html" %}
+
+{% block body %}
+
+            <div id="course_form_wrapper">
+                <div id="column1">
+                    <div id="title_wrapper">
+                        <div id="course_title_details">
+                            <input id="course_id" type="hidden", value="{{ id }}">
+                            <div>{{ course.host.username }}</div>
+                            <div id="title">{{ course.title }}</div>
+                        </div>
+                        <div>
+                            <img id="course_img" src="{{ course.image }}">
+                        </div>
+                    </div>
+
+                    {% for module in modules %}
+                    <div id="modules">
+                        <div class="module_form">
+                            <div>
+                                <div class="module_title">{{ module.title }}</div>
+                                <div class="module_location">{{ module.location }}</div>
+                            </div>
+                            <div>
+                                <div class="module_description">{{ module.description }}</div>
+                            </div>
+                            {% for workshop in workshops %}
+                                {% if workshop.module.id == module.id %}
+                                    <div id="workshops_${module_id}">
+                                        <div class="workshop_wrapper", id="new_workshop_${module_id}">
+                                            <div class="workshop_form">
+                                                <div class="workshop_date_input">{{ workshop.time }}</div>
+                                                <div class="workshop_subject_input">{{ workshop.subject }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div id="column2">
+                    <div>
+                        <textarea id="description", class="course_details", name="description", placeholder="{{ course.description }}", disabled="true"></textarea>
+                        <textarea id="practical", class="course_details", name="practical", placeholder="{{ course.practical }}", disabled="true"></textarea>
+                        <textarea id="price_details", class="course_details", placeholder="{{ course.price_details }}", disabled="true"></textarea>
+                        <div id="price">{{ course.price }}</div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
