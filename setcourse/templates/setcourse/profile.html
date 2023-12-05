@@ -7,7 +7,7 @@
         <h2>Published Courses</h2>
         <div id="course_list">
             {% for course in published_courses %}
-            <a href="{% url 'dashboard' course.id %}">
+            <a href="{% url 'course' course.id %}">
                 <div class="card">
                     <img src="{{ course.image }}">
                     <div class="card_details">

@@ -1,28 +1,33 @@
 function save (level, input, value, id) {
 
-    // 'level' can be course, module or workshop
-    // input can be title, description etc
-    // value is whatever is in that field
-    // id is database id of the course, module or workshop
-    course_id = document.getElementById("course_id").value
+    if (value != '') {
 
-    console.log("COURSE:", course_id, level, id, input, value, "-saved")
+        // 'level' can be course, module or workshop
+        // input can be title, description etc
+        // value is whatever is in that field
+        // id is database id of the course, module or workshop
+        course_id = document.getElementById("course_id").value
 
-    fetch("/new_course", {
-        method: 'PUT',
-        body: JSON.stringify({
-            course_id: course_id,
-            level: level,
-            input: input,
-            value: value,
-            id: id,
-        }),
-    })
+        console.log("COURSE:", course_id, level, id, input, value, "-saved")
+
+        fetch("/new_course", {
+            method: 'PUT',
+            body: JSON.stringify({
+                course_id: course_id,
+                level: level,
+                input: input,
+                value: value,
+                id: id,
+            }),
+        })
+    }
 }
 
 function update_image (value) {
-    image = document.getElementById("course_img")
-    image.setAttribute("src", value)
+    if (value != '') {
+        image = document.getElementById("course_img")
+        image.setAttribute("src", value)
+    }
 }
 
 function new_module() {

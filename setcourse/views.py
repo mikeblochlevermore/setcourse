@@ -26,6 +26,21 @@ def profile(request):
     })
 
 
+def course(request, course_id):
+
+    course = Course.objects.get(id=course_id)
+    modules = Module.objects.filter(course=course)
+
+    # Gets workshops from modules
+    workshops = Workshop.objects.filter(module__in=modules)
+
+    return render(request, "setcourse/course.html", {
+        "course": course,
+        "modules": modules,
+        "workshops": workshops
+    })
+
+
 def dashboard(request, course_id):
 
     course = Course.objects.get(id=course_id)
