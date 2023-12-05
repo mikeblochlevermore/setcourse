@@ -40,8 +40,10 @@ nav {
     overflow: hidden;
 }
 
-#course_img {
+#title_wrapper img {
+    max-width: 100%;
     object-fit: cover;
+    overflow: hidden;
 }
 
 #course_form_wrapper {
@@ -67,6 +69,11 @@ nav {
     padding: 10px;
     width: 80%;
     margin-bottom: 10px;
+    background-color: white;
+}
+
+#column1 {
+    margin-bottom: 50px;
 }
 
 #column2 {
@@ -92,6 +99,10 @@ nav {
     margin-bottom: 40px;
 }
 
+#image_url {
+    font-size: 8px;
+}
+
 /* Removes arrows on number inputs for Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -102,10 +113,20 @@ input::-webkit-inner-spin-button {
 #publish_button {
     position: fixed;
     bottom: 20px;
-    right: 30px;
+    right: 80px;
     height: 40px;
     width: 120px;
     background-color: lightblue;
+    border-radius: 20px;
+}
+
+#main_delete_button {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    height: 40px;
+    width: 40px;
+    background-color: pink;
     border-radius: 20px;
 }
 
@@ -138,18 +159,13 @@ input::-webkit-inner-spin-button {
 }
 
 .workshop_wrapper {
+    align-items: center;
     margin-top: 10px;
     margin-left: 30px;
     box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
     padding: 15px;
     font-size: 15px;
     color: gray;
-}
-
-.workshop_form {
-    display: flex;
-    gap: 10px;
-    align-items: center;
 }
 
 .workshop_subject_input, .workshop_date_input {

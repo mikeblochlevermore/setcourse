@@ -61,9 +61,7 @@ class Workshop(models.Model):
    def serialize(self):
         return {
             "id": self.id,
-            # "course": f"{self.course}",
-            # "module": f"{self.module}",
-            "time": self.time.strftime("%b %d %Y, %I:%M %p"),
+            "time": self.time.strftime("%Y-%m-%dT%H:%M"),
             "subject": self.subject,
         }
 

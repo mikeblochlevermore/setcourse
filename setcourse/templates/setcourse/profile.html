@@ -4,10 +4,26 @@
 
 {% if user.is_authenticated %}
     <!-- COURSES -->
-    <div id="course_list">
+        <h2>Published Courses</h2>
+        <div id="course_list">
+            {% for course in published_courses %}
+            <a href="{% url 'dashboard' course.id %}">
+                <div class="card">
+                    <img src="{{ course.image }}">
+                    <div class="card_details">
+                        <h2>{{ course.title  }}</h2>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <p>You don't have any published courses yet</p>
+            {% endfor %}
+        </div>
 
-        {% for course in hosted_courses %}
-        <a href="{% url 'dashboard' course.id %}">
+        <h2>Drafts</h2>
+        <div id="course_list">
+        {% for course in draft_courses %}
+        <a href="{% url 'draft' course.id %}">
             <div class="card">
                 <img src="{{ course.image }}">
                 <div class="card_details">
@@ -25,7 +41,6 @@
                 </div>
             </div>
         </a>
-
     </div>
 {% endif %}
 

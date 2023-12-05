@@ -16,12 +16,14 @@ function save (level, input, value, id) {
             input: input,
             value: value,
             id: id,
-            new_module: "False",
-            new_workshop: "False"
         }),
     })
 }
 
+function update_image (value) {
+    image = document.getElementById("course_img")
+    image.setAttribute("src", value)
+}
 
 function new_module() {
     module_form = document.getElementById("new_module")
@@ -34,7 +36,6 @@ function new_module() {
         method: 'PUT',
         body: JSON.stringify({
             new_module: "True",
-            new_workshop: "False",
             course_id: document.getElementById("course_id").value
         })
     })
@@ -83,7 +84,6 @@ function new_workshop (module_id) {
         method: 'PUT',
         body: JSON.stringify({
             new_workshop: "True",
-            new_module: "False",
             module_id: module_id,
         })
     })
@@ -135,4 +135,16 @@ function handle_delete (level, id) {
         console.log(level, id, "deleted")
     }
 
+}
+
+
+function publish(course_id) {
+
+    fetch("/new_course", {
+        method: 'PUT',
+        body: JSON.stringify({
+            course_id: course_id,
+            published: "True",
+        }),
+    })
 }

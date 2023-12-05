@@ -11,7 +11,7 @@
                             <div id="title">{{ course.title }}</div>
                         </div>
                         <div>
-                            <img id="course_img" src="{{ course.image }}">
+                            <img id="course_img", src="{{ course.image }}">
                         </div>
                     </div>
 
@@ -47,13 +47,19 @@
                         <textarea id="description", class="course_details", name="description", placeholder="{{ course.description }}", disabled="true"></textarea>
                         <textarea id="practical", class="course_details", name="practical", placeholder="{{ course.practical }}", disabled="true"></textarea>
                         <textarea id="price_details", class="course_details", placeholder="{{ course.price_details }}", disabled="true"></textarea>
-                        <div id="price">{{ course.price }}</div>
+                        <div id="course_price">{{ course.price }}</div>
                     </div>
                     <div>
+                        {% if course.published != True %}
+                            <button id="publish_button", onclick="publish(`{{ course.id }}`)">Publish</button>
+                        {% endif %}
+
+                        {% if course.host == user %}
+                            <button id="main_delete_button", onclick="handle_delete('course', `{{ course.id }}`)"><i class="fa-solid fa-trash"></i></button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        </form>
     </div>
 
 {% endblock %}

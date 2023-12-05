@@ -17,10 +17,12 @@ def index(request):
 
 def profile(request):
 
-    hosted_courses = Course.objects.filter(host=request.user)
+    draft_courses = Course.objects.filter(host=request.user, published=False)
+    published_courses = Course.objects.filter(host=request.user, published=True)
 
     return render(request, "setcourse/profile.html", {
-        "hosted_courses": hosted_courses
+        "draft_courses": draft_courses,
+        "published_courses": published_courses
     })
 
 
@@ -39,24 +41,39 @@ def dashboard(request, course_id):
     })
 
 
+def draft (request, course_id):
+
+    course = Course.objects.get(id=course_id)
+    modules = Module.objects.filter(course=course)
+
+    # Gets workshops from modules
+    workshops = Workshop.objects.filter(module__in=modules)
+
+    return render(request, "setcourse/new_course.html", {
+            "course": course,
+            "modules": modules,
+            "workshops": workshops
+        })
+
+
 @csrf_exempt
 def new_course(request):
     if request.method == "GET":
 
         # Create a blank course
-        new_course = Course.objects.create(
+        course = Course.objects.create(
                 host=request.user,
             )
-        print(f"Course Created. id:", new_course.id)
+        print(f"Course Created. id:", course.id)
 
         return render(request, "setcourse/new_course.html", {
-                "id": new_course.id
+                "course": course
             })
 
     if request.method == "PUT":
         data = json.loads(request.body)
 
-        if data["new_module"] == "True":
+        if "new_module" in data and data["new_module"] == "True":
 
             # lookup the course by id (sent as part of request)
             course = Course.objects.get(id=data["course_id"])
@@ -67,7 +84,7 @@ def new_course(request):
             print(f"Module {new_module.id} - created")
             return JsonResponse(new_module.id, safe=False)
 
-        if data["new_workshop"] == "True":
+        if "new_workshop" in data and data["new_workshop"] == "True":
 
             module = Module.objects.get(id=data["module_id"])
 
@@ -81,6 +98,13 @@ def new_course(request):
 
             # lookup the course by id (sent as part of request)
             course = Course.objects.get(id=data["course_id"])
+
+            if "published" in data and data["published"] == "True":
+                course.published = True
+                course.save()
+
+                print("course", course.title, "-published")
+                return HttpResponse(status=204)
 
             # level = course, module or workshop
             # input = title, description etc.
@@ -113,6 +137,15 @@ def new_course(request):
 
     if request.method == "DELETE":
         data = json.loads(request.body)
+
+        if data["level"] == "course":
+            # lookup the module by id (sent as part of request)
+            course = Course.objects.get(id=data["id"])
+            id = course.id
+            course.delete()
+
+            print(f"Course {id} - deleted")
+
 
         if data["level"] == "module":
 
