@@ -51,8 +51,18 @@ function new_module() {
         module_form.innerHTML =
             `<div class="module_form">
                 <div>
-                    <input class="module_title", type="text", name="module_title", placeholder="Module Title", onblur="save('module', 'title', value, ${module_id})">
-                    <input class="module_location", type="text", name="location", placeholder="Module Location", onblur="save('module', 'location', value, ${module_id})">
+                    <input  class="module_title", type="text", name="module_title", placeholder="Module Title", 
+                            onblur="save('module', 'title', value, ${module_id})">
+                    <input  class="module_location", type="text", name="location", placeholder="Module Location", 
+                            onblur="save('module', 'location', value, ${module_id})">
+                    <div>
+                        <div>Start Date</div>
+                        <input class="module_location", type="date",
+                                onblur="save('module', 'start_date', value, ${module_id})">
+                        <div>End Date</div>
+                        <input class="module_location", type="date"
+                                onblur="save('module', 'end_date', value, ${module_id})">
+                    </div>
                 </div>
                 <div>
                     <input class="module_description", type="text", name="module_description", placeholder="Module Description", onblur="save('module', 'description', value, ${module_id})">
@@ -98,7 +108,10 @@ function new_workshop (module_id) {
 
         workshop_form.innerHTML =
             `<div class="workshop_form">
-                <input class="workshop_date_input" type="datetime-local", name="time", onblur="save('workshop', 'time', value, ${workshop_id})" >
+                <div>Start Time</div>
+                <input class="workshop_date_input" type="datetime-local", name="time", onblur="save('workshop', 'start_time', value, ${workshop_id})">
+                <div>End Time</div>
+                <input class="workshop_date_input" type="datetime-local", name="time", onblur="save('workshop', 'end_time', value, ${workshop_id})">
                 <input class="workshop_subject_input" type="text", name="subject", placeholder="Subject", onblur="save('workshop', 'subject', value, ${workshop_id})">
                 <i class="fa-solid fa-trash", id="delete_button", onclick="handle_delete('workshop', ${workshop_id})"></i>
             </div>
@@ -152,4 +165,17 @@ function publish(course_id) {
             published: "True",
         }),
     })
+}
+
+
+function show_details (module_id) {
+    extra_details = document.getElementById(`extra_details_${module_id}`)
+    chevron = document.getElementById(`chevron_${module_id}`)
+
+    if (extra_details.style.display === "none") {
+        extra_details.style.display = "block";
+    } else {
+        extra_details.style.display = "none";
+    }
+    chevron.style.transform = "rotate(180deg)";
 }

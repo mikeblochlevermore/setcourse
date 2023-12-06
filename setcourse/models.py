@@ -40,6 +40,8 @@ class Module(models.Model):
    title = models.CharField(max_length=264, default=None, null=True)
    description = models.CharField(max_length=1024, default=None, null=True)
    location = models.CharField(max_length=1024, default=None, null=True)
+   start_date = models.DateField(default=None, null=True)
+   end_date = models.DateField(default=None, null=True)
    notes = models.CharField(max_length=1024, default=None, null=True)
 
    def serialize(self):
@@ -49,19 +51,23 @@ class Module(models.Model):
             "title": self.title,
             "description": self.description,
             "location": self.location,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
             "notes": self.notes,
         }
 
 # A Workshop is a section of a Module
 class Workshop(models.Model):
    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name="workshop")
-   time = models.DateTimeField(default=None, null=True)
+   start_time = models.DateTimeField(default=None, null=True)
+   end_time = models.DateTimeField(default=None, null=True)
    subject = models.CharField(max_length=264, default=None, null=True)
 
    def serialize(self):
         return {
             "id": self.id,
-            "time": self.time.strftime("%Y-%m-%dT%H:%M"),
+            "start_time": self.start_time.strftime("%Y-%m-%dT%H:%M"),
+            "end_time": self.end_time.strftime("%Y-%m-%dT%H:%M"),
             "subject": self.subject,
         }
 

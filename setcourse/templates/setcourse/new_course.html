@@ -36,6 +36,18 @@
                                 <input class="module_location",
                                     placeholder="{{ module.location }}",
                                     onblur="save('module', 'location', value, `{{module.id}}`)">
+                                <div>
+                                    <div>Start Date</div>
+                                    <input class="module_location",
+                                        value="{{ module.start_date|date:'Y-m-d' }}",
+                                        type="date"
+                                        onblur="save('module', 'start_date', value, `{{module.id}}`)">
+                                    <div>End Date</div>
+                                    <input class="module_location",
+                                        value="{{ module.end_date|date:'Y-m-d' }}",
+                                        type="date"
+                                        onblur="save('module', 'end_date', value, `{{module.id}}`)">
+                                </div>
                             </div>
                             <div>
                                 <input class="module_description",
@@ -48,10 +60,15 @@
                                     <div id=`workshops_{{ module.id }}`>
                                         <div class="workshop_wrapper", id="workshop_{{ workshop.id }}">
 
-                                            <input  value="{{ workshop.time|date:'Y-m-d\TH:i' }}",
+                                            <input  value="{{ workshop.start_time|date:'Y-m-d\TH:i' }}",
                                                     type="datetime-local"
                                                     class="workshop_date_input", name="time",
-                                                    onblur="save('workshop', 'time', value, `{{workshop.id}}`)">
+                                                    onblur="save('workshop', 'start_time', value, `{{workshop.id}}`)">
+
+                                            <input  value="{{ workshop.end_time|date:'Y-m-d\TH:i' }}",
+                                                    type="datetime-local"
+                                                    class="workshop_date_input", name="time",
+                                                    onblur="save('workshop', 'end_time', value, `{{workshop.id}}`)">
 
                                             <input  class="workshop_subject_input" type="text", name="subject",
                                                     placeholder="{{ workshop.subject }}",

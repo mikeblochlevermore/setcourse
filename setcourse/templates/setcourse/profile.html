@@ -4,14 +4,16 @@
 
 {% if user.is_authenticated %}
     <!-- COURSES -->
-        <h2>Published Courses</h2>
         <div id="course_list">
+            <h2>Your Published Courses</h2>
             {% for course in published_courses %}
             <a href="{% url 'course' course.id %}">
                 <div class="card">
                     <img src="{{ course.image }}">
                     <div class="card_details">
                         <h2>{{ course.title  }}</h2>
+                        <h3>{{ course.host.username }}</h3>
+                        <div>{{ course.description|slice:":100" }}</div>
                     </div>
                 </div>
             </a>
@@ -20,14 +22,16 @@
             {% endfor %}
         </div>
 
-        <h2>Drafts</h2>
+        
         <div id="course_list">
+        <div><h2>Your Drafts</h2></div>
         {% for course in draft_courses %}
         <a href="{% url 'draft' course.id %}">
             <div class="card">
                 <img src="{{ course.image }}">
                 <div class="card_details">
                     <h2>{{ course.title  }}</h2>
+                    <div>{{ course.description }}</div>
                 </div>
             </div>
         </a>

@@ -5,6 +5,9 @@
     <head>
         <title>{% block title %}setCourse{% endblock %}</title>
         <link href="{% static 'setcourse/styles.css' %}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
         <script src="https://kit.fontawesome.com/ba3c673c5b.js" crossorigin="anonymous"></script>
         {% block script %}
         <script src="{% static 'setcourse/setcourse.js' %}"></script>
@@ -13,15 +16,15 @@
     <body>
 
       <nav>
-        <div>
-          <a id="user_display", href="{% url 'profile' %}">
-            <img id="user_img" src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
-            <div id="username">{{ user.username }}</div>
-          </a>
-        </div>
-        <div id="logo">
-          <a href="{% url 'index' %}">setCourse</a>
-        </div>
+          <div>
+            <a id="user_display", href="{% url 'profile' %}">
+              <img id="user_img" src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
+              <div id="username">{{ user.username }}</div>
+            </a>
+          </div>
+          <div id="logo">
+            <a href="{% url 'index' %}">setCourse</a>
+          </div>
       </nav>
 
 
