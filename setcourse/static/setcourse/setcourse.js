@@ -168,16 +168,10 @@ function publish(course_id) {
 }
 
 
-function show_details (module_id) {
+function toggle_details (module_id) {
     extra_details = document.getElementById(`extra_details_${module_id}`)
     chevron = document.getElementById(`chevron_${module_id}`)
 
-    chevron.style.transform = (chevron.style.transform === "rotate(180deg)") ? "" : "rotate(180deg)";
+    chevron.style.transform = (chevron.style.transform === "scaleY(-1)") ? "scaleY(1)" : "scaleY(-1)";
     extra_details.style.display = (extra_details.style.display === "none" || extra_details.style.display === "") ? "block" : "none";
 }
-
-    // if (extra_details.style.display == "none") {
-    //     extra_details.style.display = "block";
-    // } else {
-    //     extra_details.style.display = "none";
-    // }
