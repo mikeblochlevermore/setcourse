@@ -63,13 +63,15 @@
 
 .extra_details {
     display: none;
+    transition: transform 0.8s ease;
 }
 
-.fa-solid fa-chevron-down {
+.chevron {
     font-size: 30px;
     margin-top: 15px;
     cursor: pointer;
     padding: 10px;
+    transition: transform 0.8s ease;
 }
 
 .workshop_banner {
