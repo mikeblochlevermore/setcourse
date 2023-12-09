@@ -2,64 +2,18 @@
 
 {% block body %}
 
-            <div id="course_form_wrapper">
-                <div id="column1">
-                    <div id="title_wrapper">
-                        <div id="course_title_details">
-                            <input id="course_id" type="hidden", value="{{ id }}">
-                            <div>{{ course.host.username }}</div>
-                            <div id="title">{{ course.title }}</div>
-                        </div>
-                        <div>
-                            <img id="course_img", src="{{ course.image }}">
-                        </div>
-                    </div>
+<div id="dashboard_wrapper">
+    <div id="dashboard_titles">
 
-                    {% for module in modules %}
-                    <div id="modules">
-                        <div class="module_form">
-                            <div>
-                                <div class="module_title">{{ module.title }}</div>
-                                <div class="module_location">{{ module.location }}</div>
-                            </div>
-                            <div>
-                                <div class="module_description">{{ module.description }}</div>
-                            </div>
-                            {% for workshop in workshops %}
-                                {% if workshop.module.id == module.id %}
-                                    <div id="workshops_${module_id}">
-                                        <div class="workshop_wrapper", id="new_workshop_${module_id}">
-                                            <div class="workshop_form">
-                                                <div class="workshop_date_input">{{ workshop.time }}</div>
-                                                <div class="workshop_subject_input">{{ workshop.subject }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+        {% for module in modules %}
+            <div class="dashboard_module" onclick="view_messages(`{{module.id}}`)">{{ module.title }}</div>
+        {% endfor %}
 
-                <div id="column2">
-                    <div>
-                        <div id="description", class="course_details">{{ course.description }}</div>
-                        <div id="practical", class="course_details">{{ course.practical }}</div>
-                        <div id="price_details", class="course_details">{{ course.price_details }}</div>
-                        <div id="course_price">{{ course.price }}</div>
-                    </div>
-                    <div>
-                        {% if course.published != True %}
-                            <button id="publish_button", onclick="publish(`{{ course.id }}`)">Publish</button>
-                        {% endif %}
-
-                        {% if course.host == user %}
-                            <button id="main_delete_button", onclick="handle_delete('course', `{{ course.id }}`)"><i class="fa-solid fa-trash"></i></button>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
     </div>
+    <div id="chat_main">
+
+    </div>
+</div>
+
 
 {% endblock %}

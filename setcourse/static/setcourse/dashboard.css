@@ -1,0 +1,56 @@
+#dashboard_wrapper {
+    display: grid;
+    grid-template-columns: 300px auto;
+}
+
+#dashboard_titles {
+    border-right: solid 3px black;
+}
+
+.dashboard_module {
+    padding: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#chat_main {
+    margin: 20px;
+}
+
+.message {
+    margin: 6px;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.host_message {
+    margin: 6px;
+    text-align: left;
+}
+
+.message_text {
+    background-color: #b3cff5;
+    border: solid 1px black;
+    padding: 8px 12px 8px 12px;
+    justify-content: flex-end;
+    width: fit-content;
+    max-width: 80%;
+    border-radius: 20px 20px 0 20px;
+    margin: 6px 0px 6px auto;
+    text-align: left;
+}
+
+.host_message_text {
+    background-color: white;
+    border: solid 1px black;
+    padding: 8px 12px 8px 12px;
+    width: fit-content;
+    max-width: 80%;
+    border-radius: 20px 20px 20px 0px;
+    margin: 6px 6px 6px 0;
+}
+
+.message_time {
+    font-size: 10px;
+}

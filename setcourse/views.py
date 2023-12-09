@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.db import IntegrityError
@@ -40,20 +41,67 @@ def course(request, course_id):
         "workshops": workshops
     })
 
-
+@csrf_exempt
+@login_required
 def dashboard(request, course_id):
 
-    course = Course.objects.get(id=course_id)
-    modules = Module.objects.filter(course=course)
+    if request.method == "GET":
 
-    # Gets workshops from modules
-    workshops = Workshop.objects.filter(module__in=modules)
+        course = Course.objects.get(id=course_id)
+        modules = Module.objects.filter(course=course)
 
-    return render(request, "setcourse/dashboard.html", {
-        "course": course,
-        "modules": modules,
-        "workshops": workshops
-    })
+        messages = Comment.objects.filter(module__in=modules)
+
+        return render(request, "setcourse/dashboard.html", {
+            "course": course,
+            "modules": modules,
+            "messages": messages
+        })
+
+
+@csrf_exempt
+@login_required
+def view_messages (request, module_id):
+
+    if request.method == "GET":
+
+        module = Module.objects.get(id=module_id)
+        messages = Comment.objects.filter(module=module)
+
+        messages = messages.order_by("-time").all()
+        return JsonResponse([message.serialize() for message in messages], safe=False)
+
+
+@csrf_exempt
+@login_required
+def new_message (request):
+     if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        message = data["message"]
+        module_id = data["module_id"]
+
+        module = Module.objects.get(id=module_id)
+
+        course = Course.objects.get(id=module.course.id)
+
+        if request.user == course.host:
+            by_host = True
+        else:
+            by_host = False
+
+        new_message = Comment.objects.create(
+                    module=module,
+                    message=message,
+                    user=request.user,
+                    by_host=by_host,
+                )
+        new_message.save()
+
+        print(new_message, " - posted")
+
+        return JsonResponse(module.id, safe=False)
 
 
 def draft (request, course_id):

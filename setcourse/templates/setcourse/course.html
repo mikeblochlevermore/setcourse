@@ -7,6 +7,9 @@
         <div class="banner_content">
             <div id="title">{{ course.title }}</div>
             <div id="host">{{ course.host.username }}</div>
+            <div id="logo">
+                <a href="{% url 'dashboard' course.id %}">Dashboard</a>
+              </div>
         </div>
     </div>
 
