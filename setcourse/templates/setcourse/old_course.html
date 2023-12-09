@@ -1,0 +1,129 @@
+{% extends "setcourse/layout.html" %}
+
+{% block body %}
+
+<!--    This template acts as a blank slate for a new course, or as a draft for unpublished courses
+        In draft mode, the placeholders are pre-populated with the saved information for that course -->
+
+{% if user.is_authenticated %}
+
+            <div id="course_form_wrapper">
+                <div id="column1">
+                    <div id="title_wrapper">
+                        <div id="course_title_details">
+                            <input id="course_id" type="hidden", value="{{ course.id }}">
+                            <input type="text", name="host", placeholder="Hosted by: {{ user.username }}", disabled="True">
+                            <input id="title" type="text", name="title",
+                                placeholder="{% if course.title %}{{ course.title }}{% else %}Course Title{% endif %}",
+                                onblur="save('course', 'title', value, '{{ course.id }}')">
+
+                            <input id="image_url" type="text", name="image",
+                                placeholder="{% if course.image %}{{ course.image }}{% else %}Image Url{% endif %}",
+                                onblur="save('course', 'image', value, '{{ course.id }}'), update_image(value)">
+                        </div>
+                        <div>
+                            <img id="course_img", src="{% if course.image %}{{ course.image }}{% else %}https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg{% endif %}">
+                        </div>
+                    </div>
+
+                    <div id="modules">
+                        {% for module in modules %}
+                        <div class="module_wrapper", id="module_{{ module.id }}">
+                            <div>
+                                <input class="module_title",
+                                    placeholder="{{ module.title }}",
+                                    onblur="save('module', 'title', value, `{{module.id}}`)">
+                                <input class="module_location",
+                                    placeholder="{{ module.location }}",
+                                    onblur="save('module', 'location', value, `{{module.id}}`)">
+                                <div>
+                                    <div>Start Date</div>
+                                    <input class="module_location",
+                                        value="{{ module.start_date|date:'Y-m-d' }}",
+                                        type="date"
+                                        onblur="save('module', 'start_date', value, `{{module.id}}`)">
+                                    <div>End Date</div>
+                                    <input class="module_location",
+                                        value="{{ module.end_date|date:'Y-m-d' }}",
+                                        type="date"
+                                        onblur="save('module', 'end_date', value, `{{module.id}}`)">
+                                </div>
+                            </div>
+                            <div>
+                                <input class="module_description",
+                                    placeholder="{{ module.description }}",
+                                    onblur="save('module', 'description', value, `{{module.id}}`)">
+                                <i class="fa-solid fa-trash", id="delete_button", onclick="handle_delete('module', `{{module.id}}`)"></i>
+                            </div>
+                            {% for workshop in workshops %}
+                                {% if workshop.module.id == module.id %}
+                                    <div id=`workshops_{{ module.id }}`>
+                                        <div class="workshop_wrapper", id="workshop_{{ workshop.id }}">
+
+                                            <input  value="{{ workshop.start_time|date:'Y-m-d\TH:i' }}",
+                                                    type="datetime-local"
+                                                    class="workshop_date_input", name="time",
+                                                    onblur="save('workshop', 'start_time', value, `{{workshop.id}}`)">
+
+                                            <input  value="{{ workshop.end_time|date:'Y-m-d\TH:i' }}",
+                                                    type="datetime-local"
+                                                    class="workshop_date_input", name="time",
+                                                    onblur="save('workshop', 'end_time', value, `{{workshop.id}}`)">
+
+                                            <input  class="workshop_subject_input" type="text", name="subject",
+                                                    placeholder="{{ workshop.subject }}",
+                                                    onblur="save('workshop', 'subject', value, `{{workshop.id}}`)">
+
+                                            <i      class="fa-solid fa-trash", id="delete_button",
+                                                    onclick="handle_delete('workshop', `{{workshop.id}}`)"></i>
+                                        </div>
+                                        <div     class="workshop_wrapper", id="new_workshop_{{ module.id }}",
+                                                 onclick="new_workshop(`{{module.id}}`)">+ Workshop</div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                        <div class="module_wrapper", id="new_module", onclick="new_module()">+ Module</div>
+                    </div>
+
+                </div>
+
+                <div id="column2">
+                    <div>
+                        <textarea
+                            id="description" class="course_details" name="description"
+                            placeholder="{% if course.description %}{{ course.description }}{% else %}Course Description{% endif %}"
+                            onblur="save('course', 'description', value, '{{ course.id }}')"
+                            ></textarea>
+
+                        <textarea
+                            id="practical", class="course_details", name="practical",
+                            placeholder="{% if course.practical %}{{ course.practical }}{% else %}Practical Details{% endif %}",
+                            onblur="save('course', 'practical', value, '{{ course.id }}')"
+                            ></textarea>
+
+                        <textarea
+                            id="price_details", class="course_details",
+                            placeholder="{% if course.price_details %}{{ course.price_details }}{% else %}Price Details{% endif %}",
+                            onblur="save('course', 'price_details', value, '{{ course.id }}')"
+                            ></textarea>
+
+                        <input
+                            id="course_price", type="number", name="price",
+                            placeholder="{% if course.price %}{{ course.price }}{% else %}Price{% endif %}",
+                            onblur="save('course', 'price', value, '{{ course.id }}')">
+                    </div>
+                    <div>
+                        <button id="publish_button", onclick="publish('{{ course.id }}')">Publish</button>
+                        <button id="main_delete_button", onclick="handle_delete('course', `{{ course.id }}`)"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+{% endif %}
+
+{% endblock %}

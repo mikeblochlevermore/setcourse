@@ -31,6 +31,7 @@ function update_image (value) {
 }
 
 function new_module() {
+
     module_form = document.getElementById("new_module")
 
     // Stop the add new on click function for that module
@@ -46,43 +47,52 @@ function new_module() {
     })
     .then(response => response.json())
     .then(module_id => {
-        console.log("new module id:", module_id)
+        console.log("new module, id:", module_id)
 
         module_form.innerHTML =
-            `<div class="module_form">
-                <div>
-                    <input  class="module_title", type="text", name="module_title", placeholder="Module Title", 
-                            onblur="save('module', 'title', value, ${module_id})">
-                    <input  class="module_location", type="text", name="location", placeholder="Module Location", 
-                            onblur="save('module', 'location', value, ${module_id})">
-                    <div>
-                        <div>Start Date</div>
-                        <input class="module_location", type="date",
-                                onblur="save('module', 'start_date', value, ${module_id})">
-                        <div>End Date</div>
-                        <input class="module_location", type="date"
-                                onblur="save('module', 'end_date', value, ${module_id})">
-                    </div>
-                </div>
-                <div>
-                    <input class="module_description", type="text", name="module_description", placeholder="Module Description", onblur="save('module', 'description', value, ${module_id})">
-                    <i class="fa-solid fa-trash", id="delete_button", onclick="handle_delete('module', ${module_id})"></i>
-                </div>
+        `<div class="module_details">
+            <div class="draft_dates">
+                <input  class="module_location",
+                        type="date"
+                        onblur="save('module', 'start_date', value, ${module_id})">
+                <input  class="module_location",
+                        type="date"
+                        onblur="save('module', 'end_date', value, ${module_id})">
             </div>
-            <div id="workshops_${module_id}">
-                <div class="workshop_wrapper", id="new_workshop_${module_id}", onclick="new_workshop(${module_id})">+ Workshop</div>
-            </div>`
+            <div>
+                    <i class="fa-solid fa-trash", id="delete_button", onclick="handle_delete('module', ${module_id})"></i>
+            </div>
+        </div>
+        <div class="draft_details">
+            <div class="title_location">
+                <input  class="module_title",
+                        placeholder="Module Title",
+                        onblur="save('module', 'title', value, ${module_id})">
+                <input  class="module_description",
+                        placeholder="Description",
+                        onblur="save('module', 'description', value, ${module_id})">
+            </div>
+            <div class="module_description">
+                <textarea   placeholder="Description",
+                            onblur="save('module', 'description', value, ${module_id})"></textarea>
+            </div>
+        </div>
+
+        <div class="workshop_banner", id="new_workshop_${module_id}", onclick="new_workshop(${module_id})">+ Workshop</div>
+        `
 
         // Assign the database id to the module in the id tag
         module_form.setAttribute("id",`module_${module_id}`)
 
         // Creates a new +Module button
-        modules = document.getElementById("modules")
-        var new_module_button = document.createElement("div");
-        new_module_button.innerHTML =
-                    `<div class="module_wrapper", id="new_module", onclick="new_module()">+ Module</div>`
+        var new_module = document.createElement('div');
+        new_module.className = 'module_banner';
+        new_module.id = 'new_module';
+        new_module.textContent = '+ Module';
+        new_module.setAttribute("onclick", "new_module()")
 
-        modules.append(new_module_button)
+        // Append the new element to the content-grid div
+        document.getElementById("content_grid").append(new_module);
     })
 }
 
@@ -107,28 +117,37 @@ function new_workshop (module_id) {
         console.log("new workshop id:", workshop_id)
 
         workshop_form.innerHTML =
-            `<div class="workshop_form">
-                <div>Start Time</div>
-                <input class="workshop_date_input" type="datetime-local", name="time", onblur="save('workshop', 'start_time', value, ${workshop_id})">
-                <div>End Time</div>
-                <input class="workshop_date_input" type="datetime-local", name="time", onblur="save('workshop', 'end_time', value, ${workshop_id})">
-                <input class="workshop_subject_input" type="text", name="subject", placeholder="Subject", onblur="save('workshop', 'subject', value, ${workshop_id})">
-                <i class="fa-solid fa-trash", id="delete_button", onclick="handle_delete('workshop', ${workshop_id})"></i>
-            </div>
-            `
+        `<div class="workshop_dates">
+            <input  type="datetime-local"
+                    class="workshop_date_input", name="time",
+                    onblur="save('workshop', 'start_time', value, ${workshop_id})">
+
+            <input  type="datetime-local"
+                    class="workshop_date_input", name="time",
+                    onblur="save('workshop', 'end_time', value, ${workshop_id})">
+        </div>
+        <div>
+            <input  class="workshop_subject_input" type="text", name="subject",
+                    placeholder="Subject",
+                    onblur="save('workshop', 'subject', value, ${workshop_id})">
+
+            <i      class="fa-solid fa-trash", id="delete_button",
+                    onclick="handle_delete('workshop', ${workshop_id})"></i>
+            </div>`
 
         // Assign the database id to the workshop in the id tag
         workshop_form.setAttribute("id",`workshop_${workshop_id}`)
 
         // Adds a new +Workshop button for that module
-        workshops_div = document.getElementById(`workshops_${module_id}`)
+        workshop_module = document.getElementById(`module_${module_id}`)
 
         var new_workshop_button = document.createElement("div");
         new_workshop_button.innerHTML =
-            `<div class="workshop_wrapper", id="new_workshop_${module_id}", onclick="new_workshop(${module_id})">+ Workshop</div>`
-        workshops_div.append(new_workshop_button)
+            `<div class="workshop_banner", id="new_workshop_${module_id}", onclick="new_workshop(${module_id})">+ Workshop</div>`
+        workshop_module.append(new_workshop_button)
     })
 }
+
 
 function handle_delete (level, id) {
 

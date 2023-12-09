@@ -4,7 +4,8 @@
 
     <div class="banner">
         <img id="course_img", src="{{ course.image }}">
-        <div id="title">{{ course.title }}
+        <div class="banner_content">
+            <div id="title">{{ course.title }}</div>
             <div id="host">{{ course.host.username }}</div>
         </div>
     </div>
@@ -33,7 +34,7 @@
                             <i onclick="toggle_details(`{{module.id}}`)" id="chevron_{{ module.id }}" class="fa-solid fa-chevron-down" style="transition: transform 0.2s ease-in-out;"></i>
                         </div>
                     </div>
-                    <div class="location_date">
+                    <div class="title_location">
                         <div class="module_title">{{ module.title }}{% if module.location %} // {{ module.location }}{% endif %}</div>
                     </div>
 
@@ -45,7 +46,7 @@
                             {% if workshop.module.id == module.id %}
                                 <div id="workshops_${module_id}">
                                     <div class="workshop_banner", id="new_workshop_${module_id}">
-                                        <strong class="workshop_date_input">{{ workshop.start_time|date:'D M d / h.i' }} -- {{ workshop.end_time|date:'h.i' }}</strong>
+                                        <div class="workshop_date_input">{{ workshop.start_time|date:'D M d / h.i' }} -- {{ workshop.end_time|date:'h.i' }}</div>
                                         <div class="workshop_subject_input">{{ workshop.subject }}</div>
                                     </div>
                                 </div>

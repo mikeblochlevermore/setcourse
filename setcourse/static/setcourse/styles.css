@@ -7,8 +7,19 @@
     width: 100%;
 }
 
+textarea {
+    resize: vertical;
+    border: none;
+    outline: none;
+}
+
+input {
+    border: none;
+    outline: none;
+}
+
 .content {
-    backdrop-filter: blur(70px) saturate(300%);
+    backdrop-filter: blur(70px) saturate(300%) brightness(110%);
     background: #ffffff10;
     width: 100vw;
     display: flex;
@@ -24,6 +35,7 @@
     margin-bottom: 70px;
     margin-top: 40px;
     margin-bottom: 60px;
+    width: 100%;
 }
 
 .banner {
@@ -33,17 +45,22 @@
     place-items: center;
 }
 
+.banner_content {
+    position: absolute;
+    width: 80%;
+}
+
 #title {
     background-color: #202124;
-    position: absolute;
     color: #dfe1e5;
     padding: 10px;
-    font-size: 70px;
+    font-size: 200%;
+    width: 100%;
 }
 
 #host {
-    position: absolute;
-    font-size: 40px;
+    padding: 10px;
+    font-size: 150%;
     color: #dfe1e5;
 }
 
@@ -74,22 +91,45 @@
     align-items: center;
 }
 
+.draft_dates {
+    display: flex;
+    align-items: center;
+    padding: 15px 0 15px 0;
+    gap: 20px;
+}
+
+.draft_dates input {
+    font-size: 24px;
+    width: 40%;
+}
+
+.draft_details {
+    gap: 20px;
+}
+
 .module_title {
+    font-size: 16px;
+}
+
+.module_title input {
     font-size: 16px;
 }
 
 .module_description {
     font-size: 14px;
+    margin: 20px 0 20px 0;
+}
+
+.module_description textarea {
+    width: 100%;
+    resize: vertical;
+    height: 30px;
+    border: none;
+    outline: none;
 }
 
 .module_date {
     font-size: 24px;
-}
-
-.location_date {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .extra_details {
@@ -118,6 +158,7 @@
 .workshop_banner {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-top: 10px;
     margin-left: 30px;
     border-right: 3px solid black;
@@ -126,22 +167,19 @@
     font-size: 15px;
 }
 
-.workshop_wrapper {
-    align-items: center;
-    margin-top: 10px;
-    margin-left: 30px;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
-    padding: 15px;
-    font-size: 15px;
-    color: gray;
+.workshop_subject_input {
+    text-align: right;
+    font-size: inherit;
 }
 
-.workshop_subject_input, .workshop_date_input {
-    padding: 15px;
-    font-size: 14px;
-    height: 15px;
-    border: none;
-    outline: none;
+.workshop_dates {
+    display: flex;
+    gap: 20px;
+}
+
+.workshop_date_input {
+    font-weight: bolder;
+    font-size: inherit;
 }
 
 .details_banner {
@@ -152,7 +190,7 @@
     margin: 20px 0 10px 0;
     background-color: #dfe1e5;
     gap: 30px;
-}
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
 
 .price_banner {
     display: grid;
@@ -162,7 +200,7 @@
     padding: 30px;
     margin: 20px 0 30px 0;
     background-color: #dfe1e5;
-}
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
 
 nav {
     background-color: #202124;
@@ -279,6 +317,10 @@ input::-webkit-inner-spin-button {
     width: 40px;
     background-color: pink;
     border-radius: 20px;
+}
+
+#delete_button {
+    padding: 0 10px 0 10px;
 }
 
 #edit_button {
