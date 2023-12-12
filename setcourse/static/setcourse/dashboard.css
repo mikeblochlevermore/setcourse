@@ -4,7 +4,7 @@
 }
 
 #dashboard_titles {
-    border-right: solid 3px black;
+    border-right: solid 5px black;
 }
 
 .dashboard_module {
@@ -53,4 +53,18 @@
 
 .message_time {
     font-size: 10px;
+}
+
+#next_wrapper {
+    display: flex;
+    width: 80%;
+    align-items: center;
+    gap: 20px;
+}
+
+#next {
+    background-color: #202124;
+    color: white;
+    padding: 20px;
+    font-size: 15px;
 }

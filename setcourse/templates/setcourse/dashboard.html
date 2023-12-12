@@ -2,6 +2,47 @@
 
 {% block body %}
 
+
+
+<div class="background-container" style="background: url('{{course.image}}');">
+    <div class="content">
+        <div class="content_grid">
+            <h1>{{ course.title }}</h1>
+
+            <div id="next_wrapper">
+                <h2 id="next">Next Module:</h2>
+                <div class="module_banner">
+                    <div class="module_details">
+                        <div class="module_date">{{ next_module.start_date|date:'D M d' }} -- {{ next_module.end_date|date:'D M d, Y' }}</div>
+                        <div class="chevron">
+                            <i onclick="toggle_details(`{{next_module.id}}`)" id="chevron_{{ next_module.id }}" class="fa-solid fa-chevron-down" style="transition: transform 0.2s ease-in-out;"></i>
+                        </div>
+                    </div>
+                    <div class="title_location">
+                        <div class="module_title">{{ next_module.title }}{% if next_module.location %} // {{ next_module.location }}{% endif %}</div>
+                    </div>
+
+                    <div class="extra_details" id="extra_details_{{ next_module.id }}">
+                        <div>
+                            <div class="module_description">{{ next_module.description }}</div>
+                        </div>
+                        {% for workshop in next_workshops %}
+                                <div id="workshops_${module_id}">
+                                    <div class="workshop_banner", id="new_workshop_${module_id}">
+                                        <div class="workshop_date_input">{{ workshop.start_time|date:'D M d / h.i' }} -- {{ workshop.end_time|date:'h.i' }}</div>
+                                        <div class="workshop_subject_input">{{ workshop.subject }}</div>
+                                    </div>
+                                </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div id="dashboard_wrapper">
     <div id="dashboard_titles">
 

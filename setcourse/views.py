@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.db import IntegrityError
 from django.utils import timezone
+from datetime import date
 import json
 
 from .models import User, Course, Module, Workshop, Comment, Student
@@ -52,10 +53,18 @@ def dashboard(request, course_id):
 
         messages = Comment.objects.filter(module__in=modules)
 
+        today = date.today()
+
+        next_modules = Module.objects.filter(course=course, start_date__gte=today)
+        next_module = next_modules.order_by('start_date').first()
+        next_workshops = Workshop.objects.filter(module=next_module)
+
         return render(request, "setcourse/dashboard.html", {
             "course": course,
             "modules": modules,
-            "messages": messages
+            "messages": messages,
+            "next_module": next_module,
+            "next_workshops": next_workshops
         })
 
 
