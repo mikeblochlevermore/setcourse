@@ -7,6 +7,8 @@
 
 {% if user.is_authenticated %}
 
+
+
 <div class="banner">
     <img id="course_img", src="{{ course.image }}">
     <div class="banner_content">
@@ -21,7 +23,6 @@
         <input id="course_id" type="hidden", value="{{ course.id }}">
     </div>
 </div>
-
 
 
 <div class="background-container" style="background: url('{{course.image}}');">
@@ -121,10 +122,13 @@
             <div class="module_banner", id="new_module", onclick="new_module()">+ Module</div>
         </div>
     </div>
-    <div>
+    <footer>
+        <div id="save_status">
+
+        </div>
         <button id="publish_button", onclick="publish('{{ course.id }}')">Publish</button>
         <button id="main_delete_button", onclick="handle_delete('course', `{{ course.id }}`)"><i class="fa-solid fa-trash"></i></button>
-    </div>
+    </footer>
 </div>
 
 {% endif %}

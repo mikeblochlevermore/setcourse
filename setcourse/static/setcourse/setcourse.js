@@ -2,6 +2,8 @@ function save (level, input, value, id) {
 
     if (value != '') {
 
+        toggle_save_status("false")
+
         // 'level' can be course, module or workshop
         // input can be title, description etc
         // value is whatever is in that field
@@ -20,8 +22,28 @@ function save (level, input, value, id) {
                 id: id,
             }),
         })
+        sleep(2000).then(() => toggle_save_status("true"));
     }
 }
+
+// Small delay to simulate longer API response
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+
+function toggle_save_status(status) {
+
+    const status_div = document.getElementById("save_status")
+
+    if (status == "false") {
+        status_div.innerHTML =`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>Saving...`
+    }
+    else {
+        status_div.innerHTML = `<div id="save_check"><i class="fa-regular fa-circle-check"></i></div> Saved`
+    }
+}
+
 
 function update_image (value) {
     if (value != '') {
@@ -29,6 +51,7 @@ function update_image (value) {
         image.setAttribute("src", value)
     }
 }
+
 
 function new_module() {
 

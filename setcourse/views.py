@@ -50,13 +50,15 @@ def dashboard(request, course_id):
 
         course = Course.objects.get(id=course_id)
         modules = Module.objects.filter(course=course)
-
         messages = Comment.objects.filter(module__in=modules)
 
         today = date.today()
 
+        # Looks up the next module closest to today's date
         next_modules = Module.objects.filter(course=course, start_date__gte=today)
         next_module = next_modules.order_by('start_date').first()
+
+        # Workshops associated with the ext module
         next_workshops = Workshop.objects.filter(module=next_module)
 
         return render(request, "setcourse/dashboard.html", {
