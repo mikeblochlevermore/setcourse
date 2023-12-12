@@ -7,7 +7,7 @@ function view_messages(module_id) {
       const chat_main = document.getElementById("chat_main");
 
       chat_main.innerHTML =
-      `<form onsubmit="send_message(${module_id})">
+      `<form onsubmit="send_message(event, ${module_id})">
             <input class="inputfield" type="text" id="message_input" name="message" placeholder="Message"></input>
             <button type="submit" type="submit">Post</button>
       </form>`
@@ -28,7 +28,7 @@ function view_messages(module_id) {
             else {
                 element.innerHTML =
                     `<div class="message">
-                        <p class="message_text"><strong>${message.user}</strong> ${message.message}</p>
+                        <p class="message_text"><strong>${message.user}:</strong> ${message.message}</p>
                         <p class="message_time">${message.time}</p>
                     </div>`;
             }
@@ -38,23 +38,20 @@ function view_messages(module_id) {
 }
 
 
-function send_message (module_id) {
-      // Track input fields
-      const message_input = document.querySelector('#message_input');
-      // post the details of the message
-      fetch('/new_message', {
-        method: 'POST',
+function send_message (event, module_id) {
+
+    // Stops page refresh
+    event.preventDefault();
+
+    // Track input fields
+    const message_input = document.querySelector('#message_input');
+
+    fetch('/new_message', {
+    method: 'POST',
         body: JSON.stringify({
-            message: `${message_input.value}`,
-            module_id: module_id,
-        })
-      })
-      .then(response => response.json())
-      .then(module_id => {
-        // Assuming view_messages is a function that you want to call with module_id
-        view_messages(module_id);
+        message: `${message_input.value}`,
+        module_id: module_id,
     })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+    })
+    .then(() => view_messages(module_id));
 }
