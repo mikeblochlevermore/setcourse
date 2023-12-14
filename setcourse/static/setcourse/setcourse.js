@@ -22,7 +22,7 @@ function save (level, input, value, id) {
                 id: id,
             }),
         })
-        sleep(2000).then(() => toggle_save_status("true"));
+        sleep(1500).then(() => toggle_save_status("true"));
     }
 }
 
@@ -196,13 +196,16 @@ function handle_delete (level, id) {
     }
     else if (level == "course") {
         // Redirects to profile page if whole course is deleted
+        alert("deleted")
+        // Delay the navigation to the profile page by 2 seconds to display the alert
+        setTimeout(() => {
             window.location.href = "/profile";
+        }, 2000);
         }
 }
 
 
 function publish(course_id) {
-
     fetch("/new_course", {
         method: 'POST',
         body: JSON.stringify({
@@ -212,12 +215,31 @@ function publish(course_id) {
     })
     .then(response => {
         if (response.ok) {
-            // If the POST request is successful, manually navigate to the profile page
-            window.location.href = "/profile";
+            alert("published")
+            // Delay the navigation to the profile page by 2 seconds to display the alert
+            setTimeout(() => {
+                window.location.href = "/profile";
+            }, 2000);
         }
-    });
+    })
 }
 
+
+function alert (type) {
+    var alert = document.getElementById("alert");
+    var alertContainer = document.getElementById('alert-container')
+        alertContainer.style.display = 'flex';
+    if (type == "published") {
+        alert.innerHTML = `
+        <div id="save_check"><i class="fa-regular fa-circle-check"></i></div>
+        <div>Course Published!</div>`;
+    }
+    if (type == "deleted") {
+        alert.innerHTML = `
+        <div id="save_check"><i class="fa-solid fa-trash"></i></div>
+        <div>Course Deleted!</div>`;
+    }
+}
 
 function toggle_details (module_id) {
     extra_details = document.getElementById(`extra_details_${module_id}`)
