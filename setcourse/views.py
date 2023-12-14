@@ -11,21 +11,23 @@ import json
 
 from .models import User, Course, Module, Workshop, Comment, Student
 
-# Create your views here.
+
 def index(request):
 
     return render(request, "setcourse/index.html")
 
 
+@csrf_exempt
 def profile(request):
+    if request.method == "GET":
 
-    draft_courses = Course.objects.filter(host=request.user, published=False)
-    published_courses = Course.objects.filter(host=request.user, published=True)
+        draft_courses = Course.objects.filter(host=request.user, published=False)
+        published_courses = Course.objects.filter(host=request.user, published=True)
 
-    return render(request, "setcourse/profile.html", {
-        "draft_courses": draft_courses,
-        "published_courses": published_courses
-    })
+        return render(request, "setcourse/profile.html", {
+            "draft_courses": draft_courses,
+            "published_courses": published_courses
+        })
 
 
 def course(request, course_id):
@@ -42,6 +44,7 @@ def course(request, course_id):
         "workshops": workshops
     })
 
+
 @csrf_exempt
 @login_required
 def dashboard(request, course_id):
@@ -50,7 +53,6 @@ def dashboard(request, course_id):
 
         course = Course.objects.get(id=course_id)
         modules = Module.objects.filter(course=course)
-        messages = Comment.objects.filter(module__in=modules)
 
         today = date.today()
 
@@ -64,7 +66,6 @@ def dashboard(request, course_id):
         return render(request, "setcourse/dashboard.html", {
             "course": course,
             "modules": modules,
-            "messages": messages,
             "next_module": next_module,
             "next_workshops": next_workshops
         })
@@ -80,7 +81,10 @@ def view_messages (request, module_id):
         messages = Comment.objects.filter(module=module)
 
         messages = messages.order_by("-time").all()
-        return JsonResponse([message.serialize() for message in messages], safe=False)
+        if messages:
+             return JsonResponse([message.serialize() for message in messages], safe=False)
+        else:
+             return JsonResponse("No messages", safe=False)
 
 
 @csrf_exempt
@@ -173,13 +177,6 @@ def new_course(request):
             # lookup the course by id (sent as part of request)
             course = Course.objects.get(id=data["course_id"])
 
-            if "published" in data and data["published"] == "True":
-                course.published = True
-                course.save()
-
-                print("course", course.title, "-published")
-                return HttpResponse(status=204)
-
             # level = course, module or workshop
             # input = title, description etc.
             # value = data from that input field
@@ -242,6 +239,16 @@ def new_course(request):
         return HttpResponse(status=204)
 
 
+    if request.method == "POST":
+        data = json.loads(request.body)
+        course = Course.objects.get(id=data["course_id"])
+
+        if "published" in data and data["published"] == "True":
+            course.published = True
+            course.save()
+
+            print("course", course.title, "-published")
+            return HttpResponse(status=204)
 
 
 

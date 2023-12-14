@@ -2,7 +2,13 @@
 
 {% block body %}
 
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Loads the messages for the upcoming module
+    selected_div = document.querySelector('.selected_module')
+    view_messages(selected_div.id)
+});
+</script>
 
 <div class="background-container" style="background: url('{{course.image}}');">
     <div class="content">
@@ -47,7 +53,11 @@
     <div id="dashboard_titles">
 
         {% for module in modules %}
-            <div class="dashboard_module" onclick="view_messages(`{{module.id}}`)">{{ module.title }}</div>
+            {% if module == next_module %}
+                <div class="selected_module" id="{{ module.id }}" onclick="view_messages(`{{module.id}}`)">{{ module.title }}</div>
+            {% else %}
+                <div class="dashboard_module" id="{{ module.id }}" onclick="view_messages(`{{module.id}}`)">{{ module.title }}</div>
+            {% endif %}
         {% endfor %}
 
     </div>

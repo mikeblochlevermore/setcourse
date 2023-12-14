@@ -68,3 +68,11 @@
     padding: 20px;
     font-size: 15px;
 }
+
+.selected_module {
+    background-color: grey;
+    color: white;
+    padding: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}

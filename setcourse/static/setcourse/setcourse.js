@@ -194,19 +194,28 @@ function handle_delete (level, id) {
         workshop_form.remove()
         console.log(level, id, "deleted")
     }
-
+    else if (level == "course") {
+        // Redirects to profile page if whole course is deleted
+            window.location.href = "/profile";
+        }
 }
 
 
 function publish(course_id) {
 
     fetch("/new_course", {
-        method: 'PUT',
+        method: 'POST',
         body: JSON.stringify({
             course_id: course_id,
             published: "True",
         }),
     })
+    .then(response => {
+        if (response.ok) {
+            // If the POST request is successful, manually navigate to the profile page
+            window.location.href = "/profile";
+        }
+    });
 }
 
 

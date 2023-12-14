@@ -1,3 +1,16 @@
+
+
+
+function toggle_selected(module_id) {
+    // Toggles the properties of the module messages tab to show which is selected
+    var selected_div = document.querySelector('.selected_module');
+    selected_div.setAttribute("class", "dashboard_module");
+
+    var new_selection = document.getElementById(module_id);
+    new_selection.setAttribute("class", "selected_module");
+}
+
+
 function view_messages(module_id) {
 
     fetch(`/view_messages/${module_id}`)
@@ -6,14 +19,23 @@ function view_messages(module_id) {
 
       const chat_main = document.getElementById("chat_main");
 
+    //   Display input field for that module's messages
       chat_main.innerHTML =
       `<form onsubmit="send_message(event, ${module_id})">
             <input class="inputfield" type="text" id="message_input" name="message" placeholder="Message"></input>
             <button type="submit" type="submit">Post</button>
       </form>`
 
-      // Loop through each message and create HTML elements
-      messages.forEach(message => {
+      // If the JSON response is "No messages", set a default message
+      if (messages == "No messages") {
+        var element = document.createElement("div");
+        element.innerHTML = `It's still quiet on this module! Add the first post, or look at the other module's message boards`
+        chat_main.append(element)
+        toggle_selected(module_id)
+
+      } else {
+        // Loop through each message and create HTML elements
+        messages.forEach(message => {
 
             var element = document.createElement("div");
 
@@ -33,7 +55,10 @@ function view_messages(module_id) {
                     </div>`;
             }
             chat_main.append(element);
+            toggle_selected(module_id)
         })
+    }
+
     })
 }
 
