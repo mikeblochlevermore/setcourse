@@ -13,13 +13,23 @@ document.addEventListener('DOMContentLoaded', function() {
 <div class="background-container" style="background: url('{{course.image}}');">
     <div class="content">
         <div class="content_grid">
-            <h1>{{ course.title }}</h1>
 
             <div id="next_wrapper">
-                <h2 id="next">Next Module:</h2>
                 <div class="module_banner">
+                    <a href="{% url 'course' course.id %}">
+                        <div class="dashboard_card">
+                            <div class="card_image_div">
+                                <img src="{{ course.image }}">
+                                <i id="image_icon" class="fa-solid fa-circle-info"></i>
+                            </div>
+                            <div class="card_details">
+                                <h1>{{ course.title  }}</h1>
+                                <h2>{{ course.host.username }}</h2>
+                            </div>
+                        </div>
+                    </a>
                     <div class="module_details">
-                        <div class="module_date">{{ next_module.start_date|date:'D M d' }} -- {{ next_module.end_date|date:'D M d, Y' }}</div>
+                        <div class="module_date">NEXT: <i class="fa-regular fa-hand-point-right"></i> {{ next_module.start_date|date:'D M d' }} -- {{ next_module.end_date|date:'D M d, Y' }}</div>
                         <div class="chevron">
                             <i onclick="toggle_details(`{{next_module.id}}`)" id="chevron_{{ next_module.id }}" class="fa-solid fa-chevron-down" style="transition: transform 0.2s ease-in-out;"></i>
                         </div>

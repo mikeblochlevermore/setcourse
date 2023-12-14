@@ -225,6 +225,26 @@ function publish(course_id) {
 }
 
 
+function enroll (course_id) {
+    fetch(`/course/${course_id}`, {
+        method: 'POST',
+        body: JSON.stringify({
+            course_id: course_id,
+            enrolled: "True",
+        }),
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("enrolled")
+            // Delay the navigation to the profile page by 2 seconds to display the alert
+            setTimeout(() => {
+                window.location.href = `/dashboard/${course_id}`;
+            }, 2000);
+        }
+    })
+}
+
+
 function alert (type) {
     var alert = document.getElementById("alert");
     var alertContainer = document.getElementById('alert-container')
@@ -238,6 +258,11 @@ function alert (type) {
         alert.innerHTML = `
         <div id="save_check"><i class="fa-solid fa-trash"></i></div>
         <div>Course Deleted!</div>`;
+    }
+    if (type == "enrolled") {
+        alert.innerHTML = `
+        <div id="save_check"><i class="fa-regular fa-circle-check"></i></div>
+        <div>You're In!</div>`;
     }
 }
 

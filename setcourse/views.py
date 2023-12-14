@@ -21,28 +21,48 @@ def index(request):
 def profile(request):
     if request.method == "GET":
 
+        enrolled = Student.objects.filter(user=request.user).values_list('course', flat=True)
+        enrolled_courses = Course.objects.filter(id__in=enrolled)
+
         draft_courses = Course.objects.filter(host=request.user, published=False)
         published_courses = Course.objects.filter(host=request.user, published=True)
 
         return render(request, "setcourse/profile.html", {
+            "enrolled_courses": enrolled_courses,
             "draft_courses": draft_courses,
             "published_courses": published_courses
         })
 
 
+@csrf_exempt
 def course(request, course_id):
 
-    course = Course.objects.get(id=course_id)
-    modules = Module.objects.filter(course=course)
+    if request.method == "GET":
 
-    # Gets workshops from modules
-    workshops = Workshop.objects.filter(module__in=modules)
+        course = Course.objects.get(id=course_id)
+        modules = Module.objects.filter(course=course)
 
-    return render(request, "setcourse/course.html", {
-        "course": course,
-        "modules": modules,
-        "workshops": workshops
-    })
+        # Gets workshops from modules
+        workshops = Workshop.objects.filter(module__in=modules)
+
+        return render(request, "setcourse/course.html", {
+            "course": course,
+            "modules": modules,
+            "workshops": workshops
+        })
+
+    if request.method == "POST":
+        data = json.loads(request.body)
+        course = Course.objects.get(id=course_id)
+
+        if "enrolled" in data and data["enrolled"] == "True":
+            new_student = Student.objects.create(
+                user=request.user,
+                course=course,
+            )
+
+            print(new_student.user.username, "Enrolled in", course.title)
+            return HttpResponse(status=204)
 
 
 @csrf_exempt

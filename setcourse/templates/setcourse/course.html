@@ -7,15 +7,17 @@
         <div class="banner_content">
             <div id="title">{{ course.title }}</div>
             <div id="host">{{ course.host.username }}</div>
-            <div id="logo">
-                <a href="{% url 'dashboard' course.id %}">Dashboard</a>
-              </div>
         </div>
     </div>
 
     <div class="background-container" style="background: url('{{course.image}}');">
         <div class="content">
             <div class="content_grid">
+
+                <div class="enroll_banner">
+                    <h2>Starts: {{ modules.0.start_date|date:'M d Y' }}</h2>
+                    <button id="enroll_button" onclick="enroll(`{{course.id}}`)">Enroll</button>
+                </div>
                 <div class="details_banner">
                     <h2>About</h2>
                     <div id="description", class="course_details">{{ course.description }}</div>
@@ -62,5 +64,6 @@
         </div>
 </div>
 <a id="edit_button", href="{% url 'draft' course.id %}"><i class="fa-regular fa-pen-to-square"></i></a>
+
 
 {% endblock %}

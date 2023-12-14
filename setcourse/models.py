@@ -92,9 +92,9 @@ class Comment(models.Model):
 
 
 class Student(models.Model):
-    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name="student"),
-    enrolled = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="student")
-    bio_image = models.CharField(max_length=1024, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="student", default=None)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="student", default=None, null=True)
+    bio_image = models.CharField(max_length=1024, default=None, null=True)
 
     def __str__(self):
-        return f"{self.student}, {self.enrolled}, {self.bio_image}"
+        return f"{self.user}, {self.course}, {self.bio_image}"
