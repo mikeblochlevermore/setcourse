@@ -14,7 +14,11 @@ from .models import User, Course, Module, Workshop, Comment, Student
 
 def index(request):
 
-    return render(request, "setcourse/index.html")
+    published_courses = Course.objects.filter(published=True)
+
+    return render(request, "setcourse/index.html", {
+            "published_courses": published_courses
+        })
 
 
 @csrf_exempt
@@ -79,6 +83,9 @@ def dashboard(request, course_id):
         # Looks up the next module closest to today's date
         next_modules = Module.objects.filter(course=course, start_date__gte=today)
         next_module = next_modules.order_by('start_date').first()
+
+        if next_module == None:
+            next_module = modules.order_by('start_date').last()
 
         # Workshops associated with the ext module
         next_workshops = Workshop.objects.filter(module=next_module)

@@ -3,6 +3,37 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+main {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#host_banner {
+    display: grid;
+    grid-template-columns: 3fr 5fr;
+    padding: 50px;
+    align-items: center;
+    height: 400px;
+    background-color: white;
+    color: black;
+    gap: 50px;
+}
+
+#enroll_banner {
+    padding: 70px 50px 50px 50px;
+    align-items: center;
+    background-color: #fcede9;
+    color: black;
+    text-align: center;
+    gap: 50px;
+}
+
+#logo_wrapper img {
+    width: 100%;
+}
+
 #alert-container {
     position: fixed;
     top: 0;

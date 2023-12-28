@@ -77,7 +77,6 @@ class Comment(models.Model):
    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comment")
    time = models.DateTimeField(auto_now_add=True)
    message = models.CharField(max_length=2048, default=None)
-   seen = models.BooleanField(default="False")
    by_host = models.BooleanField(default="False")
 
    def serialize(self):
@@ -86,7 +85,6 @@ class Comment(models.Model):
             "user": f"{self.user}",
             "time": self.time.strftime("%b %d %Y, %I:%M %p"),
             "message": self.message,
-            "seen": self.seen,
             "by_host": self.by_host
         }
 

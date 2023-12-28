@@ -13,11 +13,15 @@
     <div class="background-container" style="background: url('{{course.image}}');">
         <div class="content">
             <div class="content_grid">
-
                 <div class="enroll_banner">
                     <h2>Starts: {{ modules.0.start_date|date:'M d Y' }}</h2>
+                    {% if user.is_authenticated %}
                     <button id="enroll_button" onclick="enroll(`{{course.id}}`)">Enroll</button>
+                    {% else %}
+                    <a id="enroll_button" href="{% url 'register' %}">Login to Enroll</a>
+                    {% endif %}
                 </div>
+
                 <div class="details_banner">
                     <h2>About</h2>
                     <div id="description", class="course_details">{{ course.description }}</div>

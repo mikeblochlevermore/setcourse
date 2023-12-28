@@ -21,13 +21,20 @@
 
       <nav>
           <div>
+            {% if user.is_authenticated %}
             <a id="user_display", href="{% url 'profile' %}">
               <img id="user_img" src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
               <div id="username">{{ user.username }}</div>
             </a>
+            {% else %}
+            <a id="user_display", href="{% url 'register' %}">
+              <img id="user_img" src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
+              <div id="username">login / register</div>
+            </a>
+            {% endif %}
           </div>
           <div id="logo">
-            <a href="{% url 'index' %}">setCourse</a>
+            <a href="{% url 'index' %}">set course</a>
           </div>
       </nav>
       <div id="alert-container">

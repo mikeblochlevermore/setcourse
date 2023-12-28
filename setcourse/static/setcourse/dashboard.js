@@ -21,19 +21,23 @@ function view_messages(module_id) {
 
     //   Display input field for that module's messages
       chat_main.innerHTML =
-      `<form onsubmit="send_message(event, ${module_id})">
-            <input class="inputfield" type="text" id="message_input" name="message" placeholder="Message"></input>
-            <button type="submit" type="submit">Post</button>
-      </form>`
+      `<div class="host_message">
+        <form onsubmit="send_message(event, ${module_id})">
+                <input class="message_form" type="text" id="message_input" name="message" placeholder="Message"></input>
+                <button class="message_submit" type="submit"><i class="fa-regular fa-paper-plane"></i></button>
+        </form>
+      </div>`
 
       // If the JSON response is "No messages", set a default message
       if (messages == "No messages") {
+        toggle_selected(module_id)
+
         var element = document.createElement("div");
         element.innerHTML = `It's still quiet on this module! Add the first post, or look at the other module's message boards`
         chat_main.append(element)
-        toggle_selected(module_id)
 
       } else {
+        toggle_selected(module_id)
         // Loop through each message and create HTML elements
         messages.forEach(message => {
 
@@ -55,7 +59,6 @@ function view_messages(module_id) {
                     </div>`;
             }
             chat_main.append(element);
-            toggle_selected(module_id)
         })
     }
 

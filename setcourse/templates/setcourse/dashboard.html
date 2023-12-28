@@ -3,17 +3,17 @@
 {% block body %}
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Loads the messages for the upcoming module
-    selected_div = document.querySelector('.selected_module')
-    view_messages(selected_div.id)
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        // Loads the messages for the upcoming module
+        selected_div = document.querySelector('.selected_module')
+        view_messages(selected_div.id)
+    });
 </script>
 
 <div class="background-container" style="background: url('{{course.image}}');">
     <div class="content">
         <div class="content_grid">
-
+            <!-- Course details -->
             <div id="next_wrapper">
                 <div class="module_banner">
                     <a href="{% url 'course' course.id %}">
@@ -28,37 +28,37 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                     </a>
-                    <div class="module_details">
-                        <div class="module_date">NEXT: <i class="fa-regular fa-hand-point-right"></i> {{ next_module.start_date|date:'D M d' }} -- {{ next_module.end_date|date:'D M d, Y' }}</div>
-                        <div class="chevron">
-                            <i onclick="toggle_details(`{{next_module.id}}`)" id="chevron_{{ next_module.id }}" class="fa-solid fa-chevron-down" style="transition: transform 0.2s ease-in-out;"></i>
+                    <!-- Displays the details of the next module -->
+                        <div class="module_details">
+                            <div class="module_date"> CURRENT: <i class="fa-regular fa-hand-point-right"></i> {{ next_module.start_date|date:'D M d' }} -- {{ next_module.end_date|date:'D M d, Y' }}</div>
+                            <div class="chevron">
+                                <i onclick="toggle_details(`{{next_module.id}}`)" id="chevron_{{ next_module.id }}" class="fa-solid fa-chevron-down" style="transition: transform 0.2s ease-in-out;"></i>
+                            </div>
                         </div>
-                    </div>
-                    <div class="title_location">
-                        <div class="module_title">{{ next_module.title }}{% if next_module.location %} // {{ next_module.location }}{% endif %}</div>
-                    </div>
+                        <div class="title_location">
+                            <div class="module_title">{{ next_module.title }}{% if next_module.location %} // {{ next_module.location }}{% endif %}</div>
+                        </div>
 
-                    <div class="extra_details" id="extra_details_{{ next_module.id }}">
-                        <div>
-                            <div class="module_description">{{ next_module.description }}</div>
-                        </div>
-                        {% for workshop in next_workshops %}
-                                <div id="workshops_${module_id}">
-                                    <div class="workshop_banner", id="new_workshop_${module_id}">
-                                        <div class="workshop_date_input">{{ workshop.start_time|date:'D M d / h.i' }} -- {{ workshop.end_time|date:'h.i' }}</div>
-                                        <div class="workshop_subject_input">{{ workshop.subject }}</div>
+                        <div class="extra_details" id="extra_details_{{ next_module.id }}">
+                            <div>
+                                <div class="module_description">{{ next_module.description }}</div>
+                            </div>
+                            {% for workshop in next_workshops %}
+                                    <div id="workshops_${module_id}">
+                                        <div class="workshop_banner", id="new_workshop_${module_id}">
+                                            <div class="workshop_date_input">{{ workshop.start_time|date:'D M d / h.i' }} -- {{ workshop.end_time|date:'h.i' }}</div>
+                                            <div class="workshop_subject_input">{{ workshop.subject }}</div>
+                                        </div>
                                     </div>
-                                </div>
-                        {% endfor %}
-                    </div>
+                            {% endfor %}
+                        </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Selection for chat modules -->
 <div id="dashboard_wrapper">
     <div id="dashboard_titles">
 
@@ -70,9 +70,10 @@ document.addEventListener('DOMContentLoaded', function() {
             {% endif %}
         {% endfor %}
 
+
     </div>
     <div id="chat_main">
-
+    <!-- Messages displayed here -->
     </div>
 </div>
 

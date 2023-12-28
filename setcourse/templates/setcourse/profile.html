@@ -3,6 +3,9 @@
 {% block body %}
 
 {% if user.is_authenticated %}
+<div>{{ user.username }}</div>
+<a href="{% url 'logout' %}">Log Out</a>
+
     <!-- COURSES -->
 
         <div id="course_list">

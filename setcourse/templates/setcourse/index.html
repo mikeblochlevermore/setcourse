@@ -1,30 +1,59 @@
 {% extends "setcourse/layout.html" %}
 
 {% block body %}
-
-<div id="login_wrapper">
-    <div id="login">
-        {% if message %}
-            <div>{{ message }}</div>
-        {% endif %}
-
-        <form action="{% url 'login' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <input autofocus class="form-control" type="text" name="username" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <input class="form-control" type="password" name="password" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <input id="login_button" type="submit" value="Login">
-            </div>
-            <div>
-                Don't have an account? <a href="{% url 'register' %}">Register here.</a>
-            </div>
-        </form>
+<main>
+    <div id="logo_wrapper">
+        <img src="static/setcourse/logo.png">
     </div>
-</div>
+
+    <div id="host_banner">
+        <div>
+            <h1>HOST your course</h1>
+            <h2>for teachers and schools</h2>
+            <p>A simple way to schedule, share the details of your courses and chat with your students</p>
+        </div>
+        <div>
+            <img src="static/setcourse/host_example.gif">
+        </div>
+    </div>
+
+    <div id="enroll_banner">
+        <div>
+            <h1>ENROLL in an education</h1>
+        </div>
+        <div id="course_list">
+            {% for course in published_courses %}
+            <a href="{% url 'course' course.id %}">
+                <div class="card">
+                    <div class="card_image_div">
+                        <img src="{{ course.image }}">
+                        <i id="image_icon" class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <div class="card_details">
+                        <h2>{{ course.title  }}</h2>
+                        <h3>{{ course.host.username }}</h3>
+                        <div>{{ course.description|slice:":150" }}...</div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div id="host_banner">
+        <div>
+            <h1>CHAT</h1>
+            <h2>keep in touch without switching platforms</h2>
+            <p>Keep your schedule and chatting all on the same dashboard</p>
+        </div>
+        <div>
+            <img src="static/setcourse/chat_example.gif">
+        </div>
+    </div>
+</main>
+
+
 
 
 {% endblock %}
