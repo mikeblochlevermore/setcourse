@@ -14,7 +14,8 @@
         <div class="content">
             <div class="content_grid">
                 <div class="enroll_banner">
-                    <h2>Starts: {{ modules.0.start_date|date:'M d Y' }}</h2>
+                        <strong>Starts:</strong>
+                        <p>{{ modules.0.start_date|date:'M d, Y' }}</p>
                     {% if user.is_authenticated %}
                     <button id="enroll_button" onclick="enroll(`{{course.id}}`)">Enroll</button>
                     {% else %}

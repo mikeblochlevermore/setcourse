@@ -7,6 +7,41 @@
     border-right: solid 5px black;
 }
 
+#user_details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 80px;
+    font-size: 80px;
+    margin: 40px;
+}
+
+#user_details div {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+#user_details img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+.profile_buttons a {
+    background-color: #fcede9;
+    padding: 10px;
+    width: 80px;
+    text-align: center;
+    font-size: 16px;
+    border-right: 4px solid #eea391;
+    border-bottom: 4px solid #eea391;
+    border-top: none;
+    border-left: none;
+}
+
 
 .dashboard_card {
     display: grid;

@@ -6,7 +6,6 @@
 main {
     display: grid;
     align-items: center;
-    justify-content: center;
     width: 100%;
 }
 
@@ -15,7 +14,6 @@ main {
     grid-template-columns: 3fr 5fr;
     padding: 50px;
     align-items: center;
-    height: 400px;
     background-color: white;
     color: black;
     gap: 50px;
@@ -74,11 +72,13 @@ textarea {
     resize: vertical;
     border: none;
     outline: none;
+    background-color: inherit;
 }
 
 input {
     border: none;
     outline: none;
+    background-color: inherit;
 }
 
 .content {
@@ -136,25 +136,35 @@ input {
 }
 
 .enroll_banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1.5fr 4fr 1fr;
     padding: 30px;
     width: 60%;
     margin: 20px 0 10px 0;
-    background-color: #dfe1e5;
+    background-color: #fcede9;
     gap: 30px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    font-size: 30px;
+}
+
+#enroll_details {
+    display: flex;
+    gap: 40px;
+    font-size: 30px;
 }
 
 #enroll_button {
-    background-color: lightblue;
-    border-radius: 10px;
+    background-color: #f5c8bd;
     cursor: pointer;
     padding: 10px;
     width: 120px;
     animation: pop 0.3s ease-out;
     transform-origin: center;
+    font-size: 16px;
+    border-right: 4px solid #eea391;
+    border-bottom: 4px solid #eea391;
+    border-top: none;
+    border-left: none;
 }
 
 
@@ -245,10 +255,10 @@ input {
     justify-content: space-between;
     align-items: center;
     margin-top: 10px;
-    margin-left: 30px;
     border-right: 3px solid black;
     border-bottom: 3px solid black;
-    padding: 15px 15px 15px 0;
+    background-color: #fcede9;
+    padding: 15px;
     font-size: 15px;
 }
 
@@ -273,7 +283,7 @@ input {
     padding: 30px;
     width: 60%;
     margin: 20px 0 10px 0;
-    background-color: #dfe1e5;
+    background-color: #fcede9;;
     gap: 30px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
 
@@ -284,7 +294,7 @@ input {
     width: 60%;
     padding: 30px;
     margin: 20px 0 30px 0;
-    background-color: #dfe1e5;
+    background-color: #fcede9;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
 
 nav {
@@ -395,17 +405,21 @@ footer {
 }
 
 #publish_button {
-    height: 40px;
-    width: 120px;
-    background-color: lightblue;
-    border-radius: 20px;
+    background-color: inherit;
+    color: #fcede9;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    font-size: 20px;
 }
 
 #main_delete_button {
-    height: 40px;
-    width: 40px;
-    background-color: pink;
+    background-color: inherit;
+    color: #eea391;
     border-radius: 20px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
 }
 
 #delete_button {
@@ -454,8 +468,8 @@ footer {
     text-align: center;
     background-color: white;
     overflow: hidden;
-    border-right: 10px solid black;
-    border-bottom: 10px solid black;
+    border-right: 10px solid #eea391;
+    border-bottom: 10px solid #eea391;
     transition: transform 0.3s;
 }
 
@@ -502,6 +516,12 @@ footer {
     height: 100%;
 }
 
+.new_card_details {
+    align-items: center;
+    display: flex;
+    font-size: 30px;
+}
+
 .card_details div {
     margin-top: 10px;
 }
@@ -518,13 +538,15 @@ a {
 
 #save_status {
     align-items: center;
-    color: lightblue;
+    color:#fcede9;
     display: flex;
-    gap: 10px;
+    gap: 6px;
+    font-size: 20px;
 }
 
 #save_check {
-    font-size: 32px;
+    font-size: 26px;
+    margin-left: 6px;
     animation: pop 0.3s ease-out;
     transform-origin: center;
 }
@@ -548,21 +570,22 @@ a {
 .lds-ring {
     display: inline-block;
     position: relative;
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
+    margin-right: 6px;
   }
 
   .lds-ring div {
     box-sizing: border-box;
     display: block;
     position: absolute;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     margin: 4px;
-    border: 4px solid lightblue;
+    border: 4px solid #fcede9;
     border-radius: 50%;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    border-color: lightblue transparent transparent transparent;
+    border-color: #fcede9 transparent transparent transparent;
   }
   .lds-ring div:nth-child(1) {
     animation-delay: -0.45s;

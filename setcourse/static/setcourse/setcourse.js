@@ -37,10 +37,10 @@ function toggle_save_status(status) {
     const status_div = document.getElementById("save_status")
 
     if (status == "false") {
-        status_div.innerHTML =`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>Saving...`
+        status_div.innerHTML =`<div class="lds-ring"><div></div><div></div><div></div><div></div></div>saving...`
     }
     else {
-        status_div.innerHTML = `<div id="save_check"><i class="fa-regular fa-circle-check"></i></div> Saved`
+        status_div.innerHTML = `<div id="save_check"><i class="fa-regular fa-circle-check"></i></div> saved`
     }
 }
 

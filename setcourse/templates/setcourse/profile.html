@@ -3,13 +3,24 @@
 {% block body %}
 
 {% if user.is_authenticated %}
-<div>{{ user.username }}</div>
-<a href="{% url 'logout' %}">Log Out</a>
+<div id="user_details">
+    <div>
+        <img src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
+        <div id="username">{{ user.username }}</div>
+    </div>
+    <div class="profile_buttons">
+        <a href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i> log out</a>
+    </div>
+</div>
 
     <!-- COURSES -->
 
+    <div id="enroll_banner">
+        <div>
+            <h1>you're enrolled in 👇</h1>
+            <h4>click the course for the dashboard and chat</h4>
+        </div>
         <div id="course_list">
-            <h2>Enrolled</h2>
             {% for course in enrolled_courses %}
             <a href="{% url 'dashboard' course.id %}">
                 <div class="card">
@@ -28,10 +39,15 @@
             <p>You aren't enrolled in any courses yet</p>
             {% endfor %}
         </div>
+    </div>
 
+    <div id="host_banner">
+        <div>
+            <h1>you've published 👉</h1>
+            <h4>click the course to see or edit the details</h4>
+        </div>
 
         <div id="course_list">
-            <h2>Your Published Courses</h2>
             {% for course in published_courses %}
             <a href="{% url 'course' course.id %}">
                 <div class="card">
@@ -50,9 +66,15 @@
             <p>You don't have any published courses yet</p>
             {% endfor %}
         </div>
+    </div>
+
+    <div id="enroll_banner">
+        <div>
+            <h1>drafts 📝</h1>
+            <h4>click the course to publish, edit or delete your drafts</h4>
+        </div>
 
         <div id="course_list">
-        <div><h2>Your Drafts</h2></div>
         {% for course in draft_courses %}
         <a href="{% url 'draft' course.id %}">
             <div class="card">
@@ -71,13 +93,16 @@
         <a href="{% url 'new_course' %}">
             <div class="card">
                 <img src="https://t4.ftcdn.net/jpg/01/14/04/65/360_F_114046562_CoMtlfJGu0WhnDHLMz8qOHtHblQBH9QK.jpg">
-                <div class="card_details">
+                <div class="new_card_details">
                     <h2>Host A New Course</h2>
                 </div>
             </div>
         </a>
     </div>
+    </div>
 {% endif %}
+
+
 
 
 {% endblock %}
