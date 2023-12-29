@@ -9,6 +9,59 @@ main {
     width: 100%;
 }
 
+#login_main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    min-height: 100vh;
+}
+
+@media screen and (max-width: 1000px) {
+    #login_main {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+#login {
+    background-color: #fcede9;
+    width: 100%;
+    padding-top: 50px;
+}
+
+#register {
+    background-color: #f5c8bd;
+    width: 100%;
+    padding-top: 50px;
+}
+
+.login_form {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 40px;
+}
+
+.login_form input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    margin: 12px;
+    background-color: white;
+}
+
+.login_button {
+    background-color: white;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 16px;
+    border-right: 4px solid #eea391;
+    border-bottom: 4px solid #eea391;
+    border-top: none;
+    border-left: none;
+    text-align: center;
+}
+
+
 #host_banner {
     display: grid;
     grid-template-columns: 3fr 5fr;
@@ -17,6 +70,13 @@ main {
     background-color: white;
     color: black;
     gap: 50px;
+}
+
+@media screen and (max-width: 1000px) {
+    #host_banner{
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
 }
 
 #enroll_banner {
@@ -103,28 +163,46 @@ input {
 
 .banner {
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    place-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .banner_content {
+    background-color: #f5c8bd;
+    border-right: 8px solid #eea391;
+    border-bottom: 8px solid #eea391;
     position: absolute;
-    width: 80%;
+    margin-left: 40px;
+    padding: 0 30px 0 30px;
 }
 
 #title {
-    background-color: #202124;
-    color: #dfe1e5;
-    padding: 10px;
-    font-size: 200%;
-    width: 100%;
+    padding: 20px;
+    font-size: 40px;
 }
 
 #host {
-    padding: 10px;
-    font-size: 150%;
-    color: #dfe1e5;
+    padding: 20px;
+    font-size: 30px;
+}
+
+@media screen and (max-width: 1000px) {
+    .banner {
+        justify-content: center;
+        text-align: center;
+    }
+    .banner_content {
+        margin-left: 0px;
+        padding: 20px;
+    }
+    #title {
+        font-size: 36px;
+        padding: 0px;
+    }
+    #host {
+        font-size: 24px;
+        padding: 0px;
+    }
 }
 
 #course_img {
@@ -165,6 +243,7 @@ input {
     border-bottom: 4px solid #eea391;
     border-top: none;
     border-left: none;
+    text-align: center;
 }
 
 
@@ -179,6 +258,7 @@ input {
     border-bottom: 10px solid black;
     border-radius: 4px;
 }
+
 
 .module_details {
     display: flex;
@@ -285,17 +365,25 @@ input {
     margin: 20px 0 10px 0;
     background-color: #fcede9;;
     gap: 30px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@media screen and (max-width: 1000px) {
+    .details_banner, .price_banner, .enroll_banner, .module_banner {
+        width: 80%;
+    }
+}
 
 .price_banner {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    width: 60%;
+    min-width: 60%;
     padding: 30px;
     margin: 20px 0 30px 0;
     background-color: #fcede9;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;}
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 
 nav {
     background-color: #202124;
@@ -366,15 +454,6 @@ nav {
     background-color: white;
 }
 
-#column1 {
-    margin-bottom: 50px;
-}
-
-#column2 {
-    display: grid;
-    row-gap: 30px;
-}
-
 
 #course_price {
     font-size: 40px;
@@ -384,7 +463,9 @@ nav {
 }
 
 #image_url {
-    font-size: 8px;
+    font-size: 12px;
+    background-color: white;
+    width: 100%;
 }
 
 /* Removes arrows on number inputs for Chrome, Safari, Edge, Opera */
@@ -438,20 +519,6 @@ footer {
     background-color: white;
     border-radius: 20px;
 }
-
-.module_wrapper {
-    margin-top: 30px;
-    box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
-    padding: 15px;
-    font-size: 20px;
-    color: gray;
-    display: block;
-    gap: 10px;
-}
-
-
-
-
 
 #course_list {
     display: grid;

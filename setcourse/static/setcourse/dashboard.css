@@ -7,20 +7,40 @@
     border-right: solid 5px black;
 }
 
-#user_details {
+@media screen and (max-width: 1000px) {
+    #dashboard_wrapper{
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    #dashboard_titles {
+        border-bottom: solid 5px black;
+        border-right: none;
+        display: flex;
+    }
+}
+
+
+
+#profile_header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-left: 80px;
-    font-size: 80px;
+    font-size: 40px;
     margin: 40px;
 }
 
-#user_details div {
+#user_details {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 40px;
 }
+
+#user_details p {
+    color: #eea391;
+    font-size: 30px;
+}
+
 
 #user_details img {
     width: 80px;

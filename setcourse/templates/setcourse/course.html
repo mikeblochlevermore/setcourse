@@ -6,7 +6,7 @@
         <img id="course_img", src="{{ course.image }}">
         <div class="banner_content">
             <div id="title">{{ course.title }}</div>
-            <div id="host">{{ course.host.username }}</div>
+            <div id="host">{{ course.host.first_name }}</div>
         </div>
     </div>
 
@@ -56,7 +56,7 @@
                             {% if workshop.module.id == module.id %}
                                 <div id="workshops_${module_id}">
                                     <div class="workshop_banner", id="new_workshop_${module_id}">
-                                        <div class="workshop_date_input">{{ workshop.start_time|date:'D M d / h.i' }} -- {{ workshop.end_time|date:'h.i' }}</div>
+                                        <div class="workshop_date_input">{{ workshop.start_time|date:'D M d / H.i' }} -- {{ workshop.end_time|date:'H.i' }}</div>
                                         <div class="workshop_subject_input">{{ workshop.subject }}</div>
                                     </div>
                                 </div>
@@ -68,7 +68,10 @@
             </div>
         </div>
 </div>
-<a id="edit_button", href="{% url 'draft' course.id %}"><i class="fa-regular fa-pen-to-square"></i></a>
 
+{% if user == course.host %}
+    <!-- Allows editing if the user is hosting the course -->
+    <a id="edit_button", href="{% url 'draft' course.id %}"><i class="fa-regular fa-pen-to-square"></i></a>
+{% endif %}
 
 {% endblock %}

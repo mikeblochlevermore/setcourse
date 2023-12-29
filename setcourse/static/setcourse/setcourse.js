@@ -92,8 +92,8 @@ function new_module() {
                         placeholder="Module Title",
                         onblur="save('module', 'title', value, ${module_id})">
                 <input  class="module_description",
-                        placeholder="Description",
-                        onblur="save('module', 'description', value, ${module_id})">
+                        placeholder="Location",
+                        onblur="save('module', 'location', value, ${module_id})">
             </div>
             <div class="module_description">
                 <textarea   placeholder="Description",

@@ -91,8 +91,7 @@ class Comment(models.Model):
 
 class Student(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="student", default=None)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="student", default=None, null=True)
-    bio_image = models.CharField(max_length=1024, default=None, null=True)
+    courses = models.ManyToManyField(Course, related_name="student", blank=True, default=None)
 
     def __str__(self):
-        return f"{self.user}, {self.course}, {self.bio_image}"
+        return f"{self.user}, {self.courses}"

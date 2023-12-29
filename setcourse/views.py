@@ -17,15 +17,15 @@ def index(request):
     published_courses = Course.objects.filter(published=True)
 
     return render(request, "setcourse/index.html", {
-            "published_courses": published_courses
-        })
+    "published_courses": published_courses,
+    })
 
 
 @csrf_exempt
 def profile(request):
     if request.method == "GET":
 
-        enrolled = Student.objects.filter(user=request.user).values_list('course', flat=True)
+        enrolled = Student.objects.filter(user=request.user).values_list('courses', flat=True)
         enrolled_courses = Course.objects.filter(id__in=enrolled)
 
         draft_courses = Course.objects.filter(host=request.user, published=False)
@@ -34,7 +34,7 @@ def profile(request):
         return render(request, "setcourse/profile.html", {
             "enrolled_courses": enrolled_courses,
             "draft_courses": draft_courses,
-            "published_courses": published_courses
+            "published_courses": published_courses,
         })
 
 
@@ -52,7 +52,7 @@ def course(request, course_id):
         return render(request, "setcourse/course.html", {
             "course": course,
             "modules": modules,
-            "workshops": workshops
+            "workshops": workshops,
         })
 
     if request.method == "POST":
@@ -60,12 +60,13 @@ def course(request, course_id):
         course = Course.objects.get(id=course_id)
 
         if "enrolled" in data and data["enrolled"] == "True":
-            new_student = Student.objects.create(
-                user=request.user,
-                course=course,
-            )
+            # lookup student profile
+            student = Student.objects.get(user=request.user)
+            # save that course to their profile
+            student.courses.add(course)
+            student.save()
 
-            print(new_student.user.username, "Enrolled in", course.title)
+            print(student.user.username, "Enrolled in", course.title)
             return HttpResponse(status=204)
 
 
@@ -94,7 +95,7 @@ def dashboard(request, course_id):
             "course": course,
             "modules": modules,
             "next_module": next_module,
-            "next_workshops": next_workshops
+            "next_workshops": next_workshops,
         })
 
 
@@ -157,7 +158,7 @@ def draft (request, course_id):
     return render(request, "setcourse/new_course.html", {
             "course": course,
             "modules": modules,
-            "workshops": workshops
+            "workshops": workshops,
         })
 
 
@@ -172,7 +173,7 @@ def new_course(request):
         print(f"Course Created. id:", course.id)
 
         return render(request, "setcourse/new_course.html", {
-                "course": course
+                "course": course,
             })
 
     if request.method == "PUT":
@@ -287,16 +288,17 @@ def login_view(request):
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
 
+
         # Check if authentication successful
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse("profile"))
         else:
-            return render(request, "setcourse/login.html", {
-                "message": "Invalid username and/or password."
+            return render(request, "setcourse/register.html", {
+                "login_message": "Invalid username and/or password."
             })
     else:
-        return render(request, "setcourse/login.html")
+        return render(request, "setcourse/register.html")
 
 
 def logout_view(request):
@@ -309,22 +311,40 @@ def register(request):
         username = request.POST["username"]
         email = request.POST["email"]
 
+        # note that the school name for the user is stored in the "first_name" field
+        first_name = request.POST["first_name"]
+
+        # note that the url image for the user is stored in the "last_name" field
+        bio_image = request.POST["bio_image"]
+
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
             return render(request, "setcourse/register.html", {
-                "message": "Passwords must match."
+                "register_message": "Passwords must match."
             })
 
         # Attempt to create new user
         try:
-            user = User.objects.create_user(username, email, password)
+            user = User.objects.create_user(
+                username=username,
+                first_name=first_name,
+                last_name=bio_image,
+                email=email,
+                password=password
+                )
             user.save()
+
+            # Set up a student profile for the new user
+            student = Student.objects.create(user=user)
+            student.save()
+
         except IntegrityError:
             return render(request, "network/register.html", {
                 "message": "Username already taken."
             })
+
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:

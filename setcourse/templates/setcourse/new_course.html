@@ -16,7 +16,7 @@
             placeholder="{% if course.title %}{{ course.title }}{% else %}Course Title{% endif %}",
             onblur="save('course', 'title', value, '{{ course.id }}')">
 
-        <div id="host">{{ course.host.username }}</div>
+        <div id="host">{{ course.host.first_name }}</div>
         <input id="image_url" type="text", name="image",
             placeholder="{% if course.image %}{{ course.image }}{% else %}Image Url{% endif %}",
             onblur="save('course', 'image', value, '{{ course.id }}'), update_image(value)">

@@ -23,12 +23,11 @@
           <div>
             {% if user.is_authenticated %}
             <a id="user_display", href="{% url 'profile' %}">
-              <img id="user_img" src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
+              <img id="user_img" src="{{ user.last_name }}">
               <div id="username">{{ user.username }}</div>
             </a>
             {% else %}
             <a id="user_display", href="{% url 'register' %}">
-              <img id="user_img" src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
               <div id="username">login / register</div>
             </a>
             {% endif %}
@@ -39,7 +38,9 @@
       </nav>
       <div id="alert-container">
         <div id="alert-box">
-            <div id="alert"></div>
+            <div id="alert">
+
+            </div>
         </div>
       </div>
 

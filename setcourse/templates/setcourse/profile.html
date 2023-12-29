@@ -3,10 +3,13 @@
 {% block body %}
 
 {% if user.is_authenticated %}
-<div id="user_details">
-    <div>
-        <img src="https://live.staticflickr.com/5520/11007151534_ade9088019_k.jpg">
-        <div id="username">{{ user.username }}</div>
+<div id="profile_header">
+    <div id="user_details">
+        <img id="user_img" src="{{ user.last_name }}">
+        <div>
+            <strong id="username">{{ user.username }}</strong>
+            <p>{{ user.first_name }}</p>
+        </div>
     </div>
     <div class="profile_buttons">
         <a href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket"></i> log out</a>
@@ -30,7 +33,7 @@
                     </div>
                     <div class="card_details">
                         <h2>{{ course.title  }}</h2>
-                        <h3>{{ course.host.username }}</h3>
+                        <h3>{{ course.host.first_name }}</h3>
                         <div>{{ course.description|slice:":150" }}...</div>
                     </div>
                 </div>
@@ -57,7 +60,7 @@
                     </div>
                     <div class="card_details">
                         <h2>{{ course.title  }}</h2>
-                        <h3>{{ course.host.username }}</h3>
+                        <h3>{{ course.host.first_name }}</h3>
                         <div>{{ course.description|slice:":150" }}...</div>
                     </div>
                 </div>
@@ -84,6 +87,7 @@
                 </div>
                 <div class="card_details">
                     <h2>{{ course.title  }}</h2>
+                    <h3>{{ course.host.first_name }}</h3>
                     <div>{{ course.description|slice:":150" }}...</div>
                 </div>
             </div>
