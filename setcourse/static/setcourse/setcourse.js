@@ -1,7 +1,9 @@
 function save (level, input, value, id) {
 
+    // if new information is entered
     if (value != '') {
 
+        // starts a spinning wheel to indicate the input is saving
         toggle_save_status("false")
 
         // 'level' can be course, module or workshop
@@ -22,6 +24,7 @@ function save (level, input, value, id) {
                 id: id,
             }),
         })
+        // artificial delay before showing the input is saved
         sleep(1500).then(() => toggle_save_status("true"));
     }
 }
