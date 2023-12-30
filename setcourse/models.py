@@ -9,7 +9,7 @@ class User(AbstractUser):
 class Course(models.Model):
    host = models.ForeignKey(User, on_delete=models.CASCADE, related_name="course")
    title = models.CharField(max_length=264, default=None, null=True)
-   image = models.CharField(max_length=264, default="https://images.pexels.com/photos/1037996/pexels-photo-1037996.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", null=True)
+   image = models.CharField(max_length=264, default="https://images.pexels.com/photos/1629236/pexels-photo-1629236.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", null=True)
    description = models.CharField(max_length=1024, default=None, null=True)
    practical = models.CharField(max_length=1024, default=None, null=True)
    price = models.IntegerField(default=0, null=True)

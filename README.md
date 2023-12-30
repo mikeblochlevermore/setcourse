@@ -4,7 +4,10 @@
 
 
 ## Hosting, enrollment and chat for courses
-[See the Video](https://youtu.be/tE8i0XUhj_8)<br>
+
+[![See the Video](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/logo.png?raw=true)](https://youtu.be/1Ub4RH4AAMA)
+
+[See the Video](https://youtu.be/1Ub4RH4AAMA)<br>
 
 I've worked in education for 18 years, and scheduling and coordinating courses is still awkward. I wanted to create a platform where you could easily post the details of a course, have students enroll, and then automatically have them collected into a chatroom for course discussions.
 
@@ -38,7 +41,7 @@ for example:
         placeholder="Location",
         onblur="save('module', 'location', value, ${module_id})">
 ```
-![Hosting Example](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/host_example.gif?raw=true)
+![SaveExample](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/save_example.gif?raw=true)
 
 ```
 function save (level, input, value, id) {
@@ -96,522 +99,263 @@ def new_course(request):
             print(f"MODULE id: {module.id} detail saved: {input} = {value}")
 ```
 
-### Filtering posts
+## Modules and Workshops
 
-Depending on the page that is loaded, the view_posts function can take a "filter" variable:
-"all" to view all posts
-"following" to view posts from people the user is following
-"{username}" to view posts from just that specific user.
+![Module Example](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/module_example.gif?raw=true)
 
-For an explanation of the ${page} variable, see 'Pagination' below
+- Modules are a collection of dates (like a weekend or month)
+
+- Workshops are sections within the module (like a day, several hours or a section)
+
+### Adding a module
+
+During course creation or editing, modules can be added easily by clicking on a module div, workshops are added and handled in a similar fashion.
+
+Onclick triggers a JavaScript fuction which creates a new module / workshop via a PUT request, then creates the html using the unique module / workshop ID returned by the backend.
 
 ```
- fetch(`/view_posts/${filter}/${page}`)
+function new_module() {
+
+    module_form = document.getElementById("new_module")
+
+    // Stop the add new on click function for that module
+    module_form.setAttribute("onclick", "")
+
+    // Create a new module in the database and get its id
+    fetch("/new_course", {
+        method: 'PUT',
+        body: JSON.stringify({
+            new_module: "True",
+            course_id: document.getElementById("course_id").value
+        })
+    })
     .then(response => response.json())
-    .then(posts => {
+    .then(module_id => {
+        console.log("new module, id:", module_id)
 
-      const postList = document.querySelector('#posts');
+        module_form.innerHTML =
+        `<div class="module_details">
+            <div class="draft_dates">
+                <input  class="module_location",
+                        type="date"
+                        onblur="save('module', 'start_date', value, ${module_id})">
+                <input  class="module_location",
+                        type="date"
+                        onblur="save('module', 'end_date', value, ${module_id})">
+            </div>
+            <div>
+                    <i class="fa-solid fa-trash", id="delete_button", onclick="handle_delete('module', ${module_id})"></i>
+            </div>
+        </div>
+        <div class="draft_details">
+            <div class="title_location">
+                <input  class="module_title",
+                        placeholder="Module Title",
+                        onblur="save('module', 'title', value, ${module_id})">
+                <input  class="module_description",
+                        placeholder="Location",
+                        onblur="save('module', 'location', value, ${module_id})">
+            </div>
+            <div class="module_description">
+                <textarea   placeholder="Description",
+                            onblur="save('module', 'description', value, ${module_id})"></textarea>
+            </div>
+        </div>
 
-      // Loop through each post and create HTML elements
-      posts.forEach(post => {
+        <div class="workshop_banner", id="new_workshop_${module_id}", onclick="new_workshop(${module_id})">+ Workshop</div>
+        `
+
+        // Assign the database id to the module in the id tag
+        module_form.setAttribute("id",`module_${module_id}`)
+
+        // Creates a new +Module button
+        var new_module = document.createElement('div');
+        new_module.className = 'module_banner';
+        new_module.id = 'new_module';
+        new_module.textContent = '+ Module';
+        new_module.setAttribute("onclick", "new_module()")
+
+        // Append the new element to the content-grid div
+        document.getElementById("content_grid").append(new_module);
+    })
+}
+```
+## Chat
+
+When I host an education, it typically requires a chat group to coordinate changes, questions, discussions etc. This typically required setting up a Facebook or Discord group.
+
+- This part was largely inspired by by wife's current education which just coordinates its students and all questions with huge amounts of reply-all mails (and it hurts my techie mind) 🤦
+
+I wanted to go directly from enrollment to chatting without setting up a separate platform and avoid the added admin of collecting the students elsewhere and potentially them not having an account for that other platform.
+
+![Chat Example](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/chat_example.gif?raw=true)
+
+
+### Divided by module
+
+- Chat threads are automatically divided by course modules. So there's no need to assign topics and setup a complex server (like Discord), and it's not all in one long thread (like Facebook groups).
+
+The chat is automatically loaded at the current module, to nudge users into using the most current module to discuss what's hapenning now, or next.
+
+Messages are loaded via a JavaScript fetch request in dashboard.js
+
+```
+function view_messages(module_id) {
+
+    fetch(`/view_messages/${module_id}`)
+    .then(response => response.json())
+    .then(messages => {
+
+      const chat_main = document.getElementById("chat_main");
+
+    //   Display input field for that module's messages
+      chat_main.innerHTML =
+      `<div class="host_message">
+        <form onsubmit="send_message(event, ${module_id})">
+                <input class="message_form" type="text" id="message_input" name="message" placeholder="Message"></input>
+                <button class="message_submit" type="submit"><i class="fa-regular fa-paper-plane"></i></button>
+        </form>
+      </div>`
+
+      // If the JSON response is "No messages", set a default message
+      if (messages == "No messages") {
+        toggle_selected(module_id)
+
+        var element = document.createElement("div");
+        element.innerHTML = `It's still quiet on this module! Add the first post, or look at the other module's message boards`
+        chat_main.append(element)
+
+      } else {
+        toggle_selected(module_id)
+        // Loop through each message and create HTML elements
+        messages.forEach(message => {
 
             var element = document.createElement("div");
-            element.innerHTML =
-                `
-                <div class="post">
-                    <div class="post_wrapper">
-                        <div>
-                            <img class="avatar" src="${post.bio_image}">
-                        </div>
-                        <div>
-                            <div class="post_details">
-                                <strong>
-                                    <a href="/profile/${post.user}">${post.user}</a>
-                                </strong>
-                                <div class="post_time">
-                                    ${post.time}
-                                </div>
-                            </div>
-                            <div class="post_content">
-                                <div id="post_text_${post.id}">${post.content}</div>
-                                <div id="edit_div_${post.id}"></div>
-                            </div>
-                            <div>
-                                <img class="post_image" src=${post.image_url}>
-                            </div>
-                            <div class="like_display">
-                                <div>
-                                    <button
-                                        onclick="like(${post.id}, ${post.liked})"
-                                        id="like_button_${post.id}">
-                                        🙌
-                                    </button>
-                                </div>
-                                <div>
-                                    <p id="like_count_${post.id}">${post.like_count}</p>
-                                <div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                `;
-                postList.append(element);
+            // messages by the host of the course have specific styling
+            if (message.by_host == true) {
+                element.innerHTML =
+                    `<div class="host_message">
+                        <p class="host_message_text"><strong>${message.user} (host):</strong> ${message.message}</p>
+                        <p class="message_time">${message.time}</p>
+                    </div>`;
+            }
+            else {
+                element.innerHTML =
+                    `<div class="message">
+                        <p class="message_text"><strong>${message.user}:</strong> ${message.message}</p>
+                        <p class="message_time">${message.time}</p>
+                    </div>`;
+            }
+            chat_main.append(element);
+        })
+    }
+
+    })
+}
 ```
-
-### Producing the json response in views.py:
-Excerpt shows just the "all" filter, see views.py for the mechanism of the other filters.
-To see the serialize function, see 'Liked Status' below.
-
+### Handling in views.py
 ```
-@csrf_exempt
-@login_required
-def view_posts(request, filter, page):
+def view_messages (request, module_id):
 
     if request.method == "GET":
 
-        # Options for the "filter" variable:
-        # "all" to view all posts
-        # "following" to see posts from people the user is following
-        # "{username}" to see posts from just that specific user
+        module = Module.objects.get(id=module_id)
+        messages = Comment.objects.filter(module=module)
 
-            if filter == "all":
-                # Query for all posts
-                try:
-                    posts = Post.objects.all().order_by('-time')
-
-                except Post.DoesNotExist:
-                    return JsonResponse({"error": "Posts not found."}, status=404)
-
-        # Returns posts data as defined above
-        return JsonResponse([post.serialize(request.user) for post in data], safe=False)
-```
-
-## Likes / Giving Kudos
-
-### Liked status
-Whether a post has already been 'liked' by the current user is determined below when data is fetched for the post. The 'liked' status (True / False) is sent as part of the json file containing the posts' data.
-
-Note, this also returns whether the current user is the owner of each post, and as such has permission to edit it (can_edit = True).
-
-```
-class Post(models.Model):
-   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post")
-   content = models.CharField(max_length=264)
-   time = models.DateTimeField(auto_now_add=True)
-   like_count = models.IntegerField(default=0)
-   image_url = models.CharField(max_length=128)
-
-   def serialize(self, current_user):
-        # Includes an image of the user for each post
-        bio_image = User_bio.objects.get(user=self.user).bio_image_url
-
-        # Checks to see if the current user has already liked that post and sets a true/false status
-        like = Like.objects.filter(post=self.id, user=current_user)
-        if like.exists():
-            liked = True
+        messages = messages.order_by("-time").all()
+        if messages:
+             return JsonResponse([message.serialize() for message in messages], safe=False)
         else:
-            liked = False
+             return JsonResponse("No messages", safe=False)
+```
+## Profile and Enrolment
 
-        # If the current user owns the post, send a token that they can edit the post
-        if self.user == current_user:
-            can_edit = True
-        else:
-            can_edit = False
+![Profile Example](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/profile_example.gif?raw=true)
 
-        return {
-            "id": self.id,
-            "user": f"{self.user}",
-            "bio_image": bio_image,
-            "content": self.content,
-            "time": self.time.strftime("%b %d %Y, %I:%M %p"),
-            "like_count": self.like_count,
-            "image_url": self.image_url,
-            "liked": liked,
-            "can_edit": can_edit,
-        }
+On registration each user is created a profile.
+
+As well as a username, email and password, users can have a school name (for hosting purposes) and assign url to a bio image.
+
+A profile displays (if applicable):
+1. courses in which that user is enrolled (linked to that chatroom)
+2. courses that user hosts (linked to info / editing )
+3. drafts (courses created but not yet published)
+4. link to create a new course
+
+Course information is rendered using a Django template:
+```
+    <div id="enroll_banner">
+        <div>
+            <h1>you're enrolled in 👇</h1>
+            <h4>click the course for the dashboard and chat</h4>
+        </div>
+        <div id="course_list">
+            {% for course in enrolled_courses %}
+            <a href="{% url 'dashboard' course.id %}">
+                <div class="card">
+                    <div class="card_image_div">
+                        <img src="{{ course.image }}">
+                        <i id="image_icon" class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <div class="card_details">
+                        <h2>{{ course.title  }}</h2>
+                        <h3>{{ course.host.first_name }}</h3>
+                        <div>{{ course.description|slice:":150" }}...</div>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <p>You aren't enrolled in any courses yet</p>
+            {% endfor %}
+        </div>
+    </div>
 ```
 
-### Asynchronously updating the like status and count
-A post that has *not* been liked by the current user will have a lightgrey hands up emoji (liked == false), indicating the lack of kudos. If the post *has* been liked, the emoji will be in color: 🙌 (liked == true).
-
-### Identifying the like button by post
-Note that because 10 posts are rendered on each page, I chose to assign the post id to the like button as part of the element's id i.e. id="like_button_${post_id}"
-That way it's easier to determine which button is being clicked.
-
-
-```
-    <button
-        onclick="like(${post.id}, ${post.liked})"
-        id="like_button_${post.id}">
-        🙌
-    </button>
-
-    // Set the like button styling based on whether the post is already liked by the current user
-    // Onclick triggers the like(post.id, post.liked) function, passing on the id and the true/false status of previous likes
-
-    button = document.getElementById(`like_button_${post.id}`)
-    if (post.liked == true) {
-        button.style.color = "black";
-        button.style.textShadow = "none";
-    }
-    else {
-        button.style.color = "transparent";
-        button.style.textShadow = "0 0 0 lightgray";
-    }
-```
-
-### Clicking the like button
-Clicking the button in either state will update the page using JavaScript:
-- the button color / styling is updated
-- the like count is increased or decreased (liked / unliked)
-- the onclick function is updated to reflect whether 'liked = true' or 'false'
-
-```
-    function like(post_id, liked) {
-
-    like_counter = document.getElementById(`like_count_${post_id}`)
-    button = document.getElementById(`like_button_${post_id}`)
-
-    // if the post was previously liked, decrease the like count, change the button properties to "unliked"
-    if (liked == true) {
-        like_counter.innerHTML--
-        button.style.color = "transparent";
-        button.style.textShadow = "0 0 0 lightgray";
-        button.setAttribute("onclick", `like(${post_id}, false)`)
-        data = -1
-    }
-    // if the post was not previously liked, increase the like count, change the button properties to "liked"
-    else {
-        like_counter.innerHTML++
-        button.style.color = "black";
-        button.style.textShadow = "none";
-        button.setAttribute("onclick", `like(${post_id}, true)`)
-        data = 1
-    }
-    // sends a PUT request to the API:
-    // - updates the like count via the data above (+1 or -1)
-    // - saves new likes or deletes for unlikes
-    fetch(`/like/${post_id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-            like_count: data,
-        }),
-    })
-}
-```
-
-## Following another user
-
-On each user's bio page will be a button to follow / unfollow that user's posts.
-Note if a user visits their own bio page, this button is simply replaced by an option to log out.
-
-Whether the other user is already followed by the current user is determined via a fetch request, which gives a true/false status.
-
-```
- fetch(`/profile/${username}/follow`)
-        .then(response => response.json())
-        .then(followed => {
-
-            const follow_button_div = document.getElementById("follow_button_div");
-            const button = follow_button_div.querySelector("button");
-
-            if (followed == true) {
-                // onclick the button will trigger the like function, passing on the true/false status of previous likes
-                button.setAttribute("onclick", `follow('${username}', true)`)
-                button.innerHTML = "Following"
-                button.setAttribute("id", "unfollow_button");
-            }
-            else {
-                button.setAttribute("onclick", `follow('${username}', false)`)
-                button.innerHTML = "Follow"
-                button.setAttribute("id", "follow_button");
-            }
-        })
-    }
-```
-
-### Clicking the follow button
-On activating the follow button, the follow('${username}', true/false) function is called which toggles the button styling and sends a PUT request to update the information.
-
-```
-function follow(username, followed) {
-
-    const follow_button_div = document.getElementById("follow_button_div");
-    const button = follow_button_div.querySelector("button");
-
-    // if the account is being unfollowed - (already) followed = true:
-    if (followed == true) {
-        button.innerHTML = "Follow"
-        button.setAttribute("id", "follow_button");
-        button.setAttribute("onclick", `follow('${username}', false)`)
-        // decrease the follower count
-        follower_count.innerHTML--
-    }
-    // if the account is being followed:
-    else {
-        button.innerHTML = "Following"
-        button.setAttribute("id", "unfollow_button");
-        button.setAttribute("onclick", `follow('${username}', true)`)
-        // increase the follower count
-        follower_count.innerHTML++
-    }
-
-    // send the follow/unfollow request to the API
-    fetch(`/profile/${username}/follow`, {
-        method: 'PUT',
-    })
-}
-```
-### Registering the follow / unfollow in views.py
-
-```
-@csrf_exempt
-@login_required
-def follow(request, username):
-
-    user = User.objects.get(username=username)
-
-    if request.method == "PUT":
-
-        followed = Follower.objects.filter(user=user, follower=request.user)
-        # If the account is already followed by the user, deletes the relationship from the database
-        if followed.exists():
-            followed.delete()
-            print("unfollowed")
-
-        else:
-            new_follow = Follower(
-            user=user,
-            follower=request.user)
-            print(f"New Follow: USER:", new_follow.user, "FOLLOWER", new_follow.follower)
-            new_follow.save()
-
-    return HttpResponse(status=204)
-
-```
-
-### Follow / Follower relationship pair in models.py:
-
-```
-class Follower(models.Model):
-    # user = the person being followed
-    # follower = the person following this user
-    # therefore the follower is FOLLOWING the user
-   user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_follower")
-   follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="follower")
-
-   def __str__(self):
-        return f"{self.user}, {self.follower}"
-```
-
-## Pagination
-The specification required that posts needed to be displayed on pages of 10 at a time.
-I used the Paginator function in python to facilitate this:
-
-```
- # Paginator divides the posts to 10 per page
-        paginator = Paginator(posts, 10)
-        data = paginator.get_page(page)
-
-        # Returns posts data as defined previously
-        return JsonResponse([post.serialize(request.user) for post in data], safe=False)
-```
-### The pages can be changed via chevrons on the nav bar (prev. / next)
-
-```
-function change_page(direction) {
-
-    // Get the current page from the URL (default is page = 1)
-    let current_page = parseInt(new URLSearchParams(window.location.search).get("page") || 1);
-
-    if (direction == 'next') {
-        page = current_page + 1
-        link = document.getElementById("next_page_link")
-    } else if (current_page > 1) {
-        page = current_page - 1
-        link = document.getElementById("prev_page_link")
-    }
-
-    // Updates the href to the selected link for the new page number
-    link.setAttribute("href", `?page=${page}`)
-}
-```
-## The nav in layout.html
-
-The layout features a footer navigation with large icons.
-Options are:
-- Previous page
-- See posts from those the current user is following
-- Add a new post
-- See all posts on the network (explore)
-- See your personal profile page
-- Next Page
-
-```
-    {% if user.is_authenticated %}
-        <nav>
-          <div>
-            <a class="nav_item" href="?page=1" onclick="change_page('prev')" id="prev_page_link"><i class="fa-solid fa-chevron-left"></i></a>
-          </div>
-          <div class="nav_item">
-            <a href="{% url 'following' %}"><i class="fa-solid fa-house"></i></a>
-          </div>
-          <div class="nav_item">
-            <a href="{% url 'new_post' %}"><i class="fa-solid fa-square-plus"></i></a>
-          </div>
-          <div class="nav_item">
-            <a href="{% url 'index' %}"><i class="fa-solid fa-earth-americas"></i></a>
-          </div>
-          <div class="nav_item">
-            <a href="/profile/{{ user.username }}"><i class="fa-solid fa-circle-user"></i></a>
-          </div>
-          <div class="nav_item">
-            <a class="page_link" href="?page=2" onclick="change_page('next')" id="next_page_link"><i class="fa-solid fa-chevron-right"></i></a>
-          </div>
-        </nav>
-        {% endif %}
-```
-
-## Profile page
-
-Each user has a bio which features a text and an image of their choosing.
-On registration they are given a default image and the text 'I'm New!' - these can be changed as desired.
-
-Bio data is stored using the model User_bio (see models.py)
-
-- The bio data and follower/following count is rendered directly by Django
-- The posts for that user are fetched via json using view_posts(username) - see above.
-- The amount of followers the user has is displayed (follower_count)
-- as well as the number of accounts the user follows (following_count)
-
-```
-# profile page that displays a bio and that user's posts
-def profile(request, username):
-
-    user = User.objects.get(username=username)
-
-    # Get the number of followers the selected user has
-    followers = Follower.objects.filter(user=user)
-    follower_count = followers.count()
-
-    # Get the number of accounts the selected user follows
-    # (i.e. relationships where the user is the follower)
-    following = Follower.objects.filter(follower=user)
-    following_count = following.count()
-
-    bio = User_bio.objects.filter(user=user)
-
-    # If the account has just been created, set a default bio for the user
-    if not bio.exists():
-        default_bio = User_bio(
-            user=request.user,
-            bio="I'm New!",
-            bio_image_url="https://emojis.wiki/thumbs/emojis/raising-hands.webp"
-        )
-        default_bio.save()
-
-    bio = User_bio.objects.get(user=user)
-
-    return render(request, "network/profile.html", {
-        "username": username,
-        "follower_count": follower_count,
-        "following_count": following_count,
-        "bio": bio,
-    })
-```
-
-## Editing Posts
-
-If a user owns a post, a button is displayed that allows them to edit the post.
-Note: A similar mechanic is employed to allow users to edit their own bio text and image.
-
-Whether the current user has permission to edit a post is sent as part of the json data when requesting data for posts (see: Liked Status).
-
-JavaScript creates an edit button if 'can_edit == true'
-
-```
-// If the user owns the post (true/false from backend via "post.can_edit"), display an edit
-edit_div = document.getElementById(`edit_div_${post.id}`)
-if (post.can_edit == true) {
-    edit_div.innerHTML =
-    `<button id="edit_button" onclick="edit(${post.id})">
-        <i class="fa-solid fa-pen-to-square"></i>
-    </button>`
-}
-```
-### Clicking the edit button
-- On click, the button will display the text from the post in a textarea that can be adjusted.
-- The edit button is changed to a save button
-- On clicking the save button, the new text is displayed without a page refresh
-- The updated information is sent via a PUT request to the backend.
-
-```
-function edit(post_id) {
-    text = document.getElementById(`post_text_${post_id}`)
-    old_content = text.textContent
-
-    // Change the text to a textarea, pre-populated with the current content
-    text.innerHTML = `<textarea id="editing_textarea">${old_content}</textarea>`
-
-    // Change the edit button to a save button
-    edit_div = document.getElementById(`edit_div_${post_id}`)
-    edit_div.innerHTML =
-    `<button id="save_button">
-        <i class="fa-solid fa-circle-check"></i>
-    </button>`
-
-    let save_button = document.getElementById("save_button")
-    // On clicking save, change the text on the post to the new content, then save to the server
-    save_button.addEventListener("click", () => {
-        new_content = text.querySelector("textarea").value
-        text.innerHTML = `${new_content}`
-
-        // Change the save button back to the edit button
-        edit_div.innerHTML =
-        `<button id="edit_button" onclick="edit(${post_id})">
-            <i class="fa-solid fa-pen-to-square"></i>
-        </button>`
-
-        fetch("/new_post", {
-            method: 'PUT',
-            body: JSON.stringify({
-                post_id: post_id,
-                content: new_content
-            }),
-        })
-    })
-}
-```
-
-### Edits are handled by the new_post function in views.py
-Note that the backend double-checks the current user is the owner of that post, before updating the post with the new information, which was sent through json data via a PUT request (see above)
-
-```
-@csrf_exempt
-@login_required
-def new_post(request):
-
-    if request.method == "PUT":
-        data = json.loads(request.body)
-        post_id = data["post_id"]
-        post = Post.objects.get(id=post_id)
-
-        # Double-check the post is owned by the current user
-        if post.user == request.user:
-
-            post.content = data["content"]
-            post.save()
-            return HttpResponse(status=204)
-        else:
-            return JsonResponse({"error": "Current user lacks permission to edit"}, status=500)
-
-```
-
-### Credit to CS50W
-- Basic Django setup
-- Login / Logout and Registration functions in views.py
-- User model in models.py
-- register.html
-
-[See Project Specifications](https://cs50.harvard.edu/web/2020/projects/4/network/)
+
+## Capstone for CS50W
+
+This project was created as a final project for CS50s Web Development with Python and JavaScript.
+
+- Please note there was no template for this project, all files, as well as the concept, are the creation of the author.
+
+[See Project Specifications](https://cs50.harvard.edu/web/2020/projects/final/capstone/)
+
+
+## Distinctiveness and Complexity
+
+This project was inspired from a common difficulty I have faced, and see others in the education industry facing - the complex coordination required to advertise the details of a course, and then gather students in a discussion forum.
+
+Typically the process involves creating a website to display couese information. Many educators outsource this process, making a barrier to quickly updating information about the course.
+
+Following this, students might need to enroll via email, the teacher would generate an email list, then reroute those students into a discussion group such as Facebook or Discord, or worse, they just email back and forth all the time!
+
+I believe this project is distinct from the previous assignments in CS50W since although it features a chat system and profiles (like Network) it automatically organises chat by Module, 
+
+
+### File contents:
+| file | description |
+| ---- | ----------- |
+| dashboard.js / setcourse.js | JavaScript functions |
+| index.html | main landing page |
+| dashboard.html | course chat and current module information |
+| layout.html | generic layout and nav |
+| new_course.html | editing page for courses |
+| profile.html | displays enrolled, hosting and draft courses for user |
+| register.html | login / registration page |
+| models.py | classes for User, Course, Module, Workshop, Comment, Student |
+| views.py | main Python backend |
+| urls.py | routing |
+| dashboard.css / styles.css | CSS styling |
+| db.sqlite3 | database |
+
+### How to run
+
+Set up database
+- python3 manage.py makemigrations
+- python3 manage.py migrate
+
+Run server
+- python3 manage.py runserver
+
+
