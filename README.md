@@ -340,7 +340,11 @@ Although this project may share some similar features to my previous CS50W proje
 - I also devoted extra time to working on the CSS styling, since I wanted courses to appear unique, despite sharing the same template. As such, the course backgrounds are derived from a blurred, extra-saturated version of their cover photos, which preserves a colour scheme and helps each page seem unique. I have also worked more on animations, such as small pops to draw attention to actions, and created custom drop-down boxes.
 - The automatic save function was also an innovation for this project - since courses can contain a lot of details, I wanted to ensure that inputs were saved periodically. I feel that this is an upgrade to previous projects that relied more on POST requests of a full form, often linked to a page refresh. I also wanted to indicate the save status via animation, to comfort users that their inputs were retained.
 
+## Mobile Responsiveness
 
+CSS dynamically adjusts to changes in screen dimension. Specific examples are changes to the grid layout on index.html and the reformatting of the chat layout for mobile screens.
+
+![Mobile Example](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/mobile_example.gif?raw=true)
 
 ### File contents:
 | file | description |
