@@ -3,9 +3,9 @@
 <img src="https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/logo.png?raw=true" max-width="400"/>
 
 
-## Hosting, enrollment and chat for courses
+## Watch on YouTube
 
-[![See the Video](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/logo.png?raw=true)](https://youtu.be/1Ub4RH4AAMA)
+[![See the Video](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/youtube_thumb.png?raw=true)](https://youtu.be/1Ub4RH4AAMA)
 
 [See the Video](https://youtu.be/1Ub4RH4AAMA)<br>
 
@@ -76,6 +76,8 @@ function save (level, input, value, id) {
 }
 ```
 ### Handling the save in views.py
+The new_course function also handles GET requests to retrieve the form template (pre-populated with draft details if applicable), as well as DELETE requests to delete the course.
+
 ```
 def new_course(request):
 
@@ -111,7 +113,7 @@ def new_course(request):
 
 During course creation or editing, modules can be added easily by clicking on a module div, workshops are added and handled in a similar fashion.
 
-Onclick triggers a JavaScript fuction which creates a new module / workshop via a PUT request, then creates the html using the unique module / workshop ID returned by the backend.
+Onclick triggers a JavaScript fuction which creates a new module / workshop element and, via a PUT request, creates the html using the unique module / workshop ID returned by the backend.
 
 ```
 function new_module() {
@@ -184,9 +186,9 @@ function new_module() {
 
 When I host an education, it typically requires a chat group to coordinate changes, questions, discussions etc. This typically required setting up a Facebook or Discord group.
 
-- This part was largely inspired by by wife's current education which just coordinates its students and all questions with huge amounts of reply-all mails (and it hurts my techie mind) 🤦
+- This part was largely inspired by by wife's current education which coordinates its students and all questions with huge amounts of reply-all mails (and it hurts my techie mind) 🤦
 
-I wanted to go directly from enrollment to chatting without setting up a separate platform and avoid the added admin of collecting the students elsewhere and potentially them not having an account for that other platform.
+I wanted to go directly from enrollment to chatting without setting up a separate platform and avoid the added admin of collecting the students elsewhere and potentially them not having an account for that other platform, as well as other logistic issues.
 
 ![Chat Example](https://github.com/mikeblochlevermore/setcourse/blob/master/setcourse/static/setcourse/chat_example.gif?raw=true)
 
@@ -278,8 +280,8 @@ On registration each user is created a profile.
 As well as a username, email and password, users can have a school name (for hosting purposes) and assign url to a bio image.
 
 A profile displays (if applicable):
-1. courses in which that user is enrolled (linked to that chatroom)
-2. courses that user hosts (linked to info / editing )
+1. courses in which that user is enrolled (linked to the applicable dashboard)
+2. courses that user hosts (linked to course info / editing )
 3. drafts (courses created but not yet published)
 4. link to create a new course
 
@@ -324,13 +326,20 @@ This project was created as a final project for CS50s Web Development with Pytho
 
 ## Distinctiveness and Complexity
 
-This project was inspired from a common difficulty I have faced, and see others in the education industry facing - the complex coordination required to advertise the details of a course, and then gather students in a discussion forum.
+As per the CS50W specification, despite sharing some characteristics, I would argue that this course is neither fundamentally a social network, nor e-commerce site. Instead, this project was inspired from a common difficulty I have faced, and see others in the education industry facing - the complex coordination required to advertise the details of a course, and then gather students in a discussion forum. An issue that, in fact, e-commerce sites and social media platforms aren't great at resolving.
 
-Typically the process involves creating a website to display couese information. Many educators outsource this process, making a barrier to quickly updating information about the course.
+Typically for small educational businesses, course hosting first involves creating a website to display course information, which many outsource, making a barrier to quickly updating information about the schedule / details etc.
 
-Following this, students might need to enroll via email, the teacher would generate an email list, then reroute those students into a discussion group such as Facebook or Discord, or worse, they just email back and forth all the time!
+Following this, students might need to enroll via email, the teacher would generate an email list, then reroute those students into a discussion group such as Facebook or Discord, or perhaps, they just email back and forth all the time.
 
-I believe this project is distinct from the previous assignments in CS50W since although it features a chat system and profiles (like Network) it automatically organises chat by Module, 
+Although this project may share some similar features to my previous CS50W projects, I feel I have expanded it in complexity especially in the following areas:
+
+- The project was created with a specific demographic in mind, and as such, I have had greater consideration for its functionallity and actual use. To aid with this thought process, I created a [Figma wireframe](https://www.figma.com/file/0liSzWJsWQoXBTBvKAc3nn/setCourse?type=design&node-id=0%3A1&mode=design&t=Od3aMNjkgxVXdi5g-1).
+
+- This project features 6 models. Since courses, modules and workshops are nested within each other, this format required extra consideration in its implementation, for example, ensuring that when a 'new_workshop' div is clicked, it triggers the correct association to its respective module (and the same for module and course). I spent some time creating a streamlined system that assigns course, module and workshop ids and communicates them effectively between the front and back ends.
+- I also devoted extra time to working on the CSS styling, since I wanted courses to appear unique, despite sharing the same template. As such, the course backgrounds are derived from a blurred, extra-saturated version of their cover photos, which preserves a colour scheme and helps each page seem unique. I have also worked more on animations, such as small pops to draw attention to actions, and created custom drop-down boxes.
+- The automatic save function was also an innovation for this project - since courses can contain a lot of details, I wanted to ensure that inputs were saved periodically. I feel that this is an upgrade to previous projects that relied more on POST requests of a full form, often linked to a page refresh. I also wanted to indicate the save status via animation, to comfort users that their inputs were retained.
+
 
 
 ### File contents:
@@ -358,4 +367,9 @@ Set up database
 Run server
 - python3 manage.py runserver
 
+### Get in Touch!
+
+Michael Bloch-Levermore <br>
+📧 interactivephilosophy@gmail.com <br>
+👤 [LinkedIn](https://www.linkedin.com/in/mike-bloch-levermore/)
 
